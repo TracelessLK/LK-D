@@ -1,6 +1,6 @@
 {
   "name": "LK-D",
-  "version": "0.0.61",
+  "version": "0.0.62",
   "main": "./main.bundle.js",
   "scripts": {
     "lint": "eslint --fix --ext .js .",

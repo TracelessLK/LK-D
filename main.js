@@ -143,6 +143,7 @@ app.on('activate', () => {
 })
 ipc.on('asynchronous-message', () => {
   mainWindow.showInactive()
+  mainWindow.focus()
   // event.sender.send('asynchronous-reply', '666')
 })
 ipc.on('openFileDialog', (event) => {

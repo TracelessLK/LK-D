@@ -124,16 +124,7 @@
        location.reload()
       },
      }))
-      menu.append(new MenuItem({type: 'separator'}))
-      menu.append(new MenuItem({
-        label: '删除',
-        async click() {
-          await ChatManager.asyDeleteChat(user.id, chatId)
-          location.reload()
-        },
-        visible: isGroupChat !== '1'
-      }))
-      menu.append(new MenuItem({type: 'separator'}))
+     menu.append(new MenuItem({type: 'separator'}))
      menu.append(new MenuItem({
       label:focus!==1?'⭐特别提醒':'取消特别提醒',
       async click() {
@@ -145,6 +136,15 @@
        location.reload()
       },
      }))
+     menu.append(new MenuItem({type: 'separator'}))
+     menu.append(new MenuItem({
+        label: '删除',
+        async click() {
+          await ChatManager.asyDeleteChat(user.id, chatId)
+          location.reload()
+        },
+        visible: isGroupChat !== '1'
+      }))
       menu.popup({ window: remote.getCurrentWindow() })
     }
 
@@ -259,12 +259,12 @@
               Imgdata = Imgdata.slice(0, 4)
               for (let j = 0; j < Imgdata.length; j++) {
                 if (Imgdata.length === 3) {
-                  imghtml += `<div style="${Imgdata[j] === Imgdata[0] ? 'width:40px;text-align:center' : 'width:20px'};margin:0;padding:0;float:left;;height: 20px;border:red 0px solid">
-                                          <img src="${Imgdata[j].pic === null || Imgdata[j].pic === "" ? '../images/1024x1024.png' : Imgdata[j].pic}" style="width:20px;height:20px;">
+                  imghtml += `<div style="${Imgdata[j] === Imgdata[0] ? 'width:100%;text-align:center' : 'width:50%'};margin:0;padding:0;float:left;;height: 50%;border:red 0px solid">
+                                          <img src="${Imgdata[j].pic === null || Imgdata[j].pic === "" ? '../images/1024x1024.png' : Imgdata[j].pic}" style="${Imgdata[j] === Imgdata[0] ? 'width:50%;text-align:center' : 'width:100%'};height:100%;">
                                          </div>`
                 } else {
-                  imghtml += `<div style="${Imgdata.length === 2 ? 'margin-top:10px' : 'margin:0'};padding:0;float:left;width:20px;height: 20px;border:0px solid red">
-                                         <img src="${Imgdata[j].pic === null || Imgdata[j].pic === "" ? '../images/1024x1024.png' : Imgdata[j].pic}" style="width:20px;height:20px;">
+                  imghtml += `<div style="${Imgdata.length === 2 ? 'margin-top:10px' : 'margin:0'};padding:0;float:left;width:50%;height: 50%;border:0px solid red">
+                                         <img src="${Imgdata[j].pic === null || Imgdata[j].pic === "" ? '../images/1024x1024.png' : Imgdata[j].pic}" style="width:100%;height:100%;">
                                         </div>`
                 }
               }
@@ -281,21 +281,21 @@
             const remind = `<span id = '@${chatId}' style="color: red">${data.indexOf('@' + user.name) !== -1 && newMsgNum>0? '[有人@我]' : '[有全体消息]'}</span>`
             //html += `<img  src="../images/sjx.png" style="width:10px;height:10px;margin-top: -23%;margin-left: -6.5%;transform:rotate(90deg);display: ${MessageCeiling!==null?"block":"none"}"/>`
             html += isGroup
-              ? `<div style="width:43px;height: 43px;border: solid 1px rgb(218,223,225);background-color: rgb(221,222,224);border-radius:3px; overflow:hidden">
+              ? `<div style="width:17%;height: 60%;border: solid 1px rgb(218,223,225);background-color: rgb(221,222,224);border-radius:3px; overflow:hidden;float: left">
                                ${imghtml}
                          </div>&nbsp;&nbsp;
-                        <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:173.94px;height: 40px;margin-left: 0px;margin-top: 0px;float: left" >
-                               <div style="border:red solid 0px;width: 95px; height: 20px;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${re.name}</div>
-                               <div style="border:red solid 0px;width: 69px; height: 20px;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold;">${timeStr}</div>
-                               <div style="border:red solid 0px;line-height:25px; color:rgb(128,128,128);width: 170px;height: 20px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?((data.indexOf('@' + user.name) !== -1 && newMsgNum>0)||((data.indexOf('@所有人') !== -1 && newMsgNum>0))? remind : '')+MsgsOneDataName+data:draft}</div>
+                        <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
+                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus?'⭐':''}${re.name}</div>
+                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold;">${timeStr}</div>
+                               <div style="border:red solid 0px;line-height:25px; color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?((data.indexOf('@' + user.name) !== -1 && newMsgNum>0)||((data.indexOf('@所有人') !== -1 && newMsgNum>0))? remind : '')+MsgsOneDataName+data:draft}</div>
                          </div>`
-              : `<img src="${person.pic ? person.pic : '../images/1024x1024.png'}"  style="width:43px;height:43px;border-radius:0px;"/>&nbsp;&nbsp;
-                        <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:173.94px;height: 40px;margin-left: 0px;margin-top: 0px;float: left" >
-                               <div style="border:red solid 0px;width: 95px; height: 20px;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${person.name}</div>
-                               <div style="border:red solid 0px;width: 69px; height: 20px;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold">${timeStr}</div>
-                               <div style="border:red solid 0px;line-height:25px;color:rgb(128,128,128);width: 170px;height: 20px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?data:draft}</div>
+              : `<img src="${person.pic ? person.pic : '../images/1024x1024.png'}"  style="width:17%;height:60%;border-radius:3px;"/>&nbsp;&nbsp;
+                        <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
+                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${person.name}</div>
+                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold">${timeStr}</div>
+                               <div style="border:red solid 0px;line-height:25px;color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?data:draft}</div>
                          </div>`
-           html += `<img  src="../images/sjx.png" style="border:0px red solid;width:10px;height:10px;margin-top: -24%;margin-left:0%;transform:rotate(180deg);visibility: ${MessageCeiling!==null?"visible":"hidden"}"/>`
+           html += `<img  src="../images/sjx.png" style="border:0px red solid;float:left;width:4%;height:15%;margin-top:-23%;margin-left:0%;transform:rotate(180deg);visibility: ${MessageCeiling!==null?"visible":"hidden"}"/>`
             // console.log({newMsgNum})
             if (newMsgNum) {
               // console.log('here')

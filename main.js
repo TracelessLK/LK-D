@@ -143,6 +143,7 @@ app.on('activate', () => {
 })
 ipc.on('asynchronous-message', () => {
   mainWindow.showInactive()
+  mainWindow.focus()
   // event.sender.send('asynchronous-reply', '666')
 })
 ipc.on('openFileDialog', (event) => {
@@ -409,7 +410,7 @@ function download (fileAry) {
         if (item.isPaused()) {
           changeMsg(f, 'paused')
         } else {
-          changeMsg(f, Math.round((item.getReceivedBytes() / item.getTotalBytes()) * 100) + '%')
+          changeMsg(f, Math.floor( item.getReceivedBytes()) + 'kb')
         }
       }
     })

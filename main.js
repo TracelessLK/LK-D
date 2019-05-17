@@ -141,7 +141,10 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
+ipc.on('asynchronous-message', () => {
+  mainWindow.showInactive()
+  // event.sender.send('asynchronous-reply', '666')
+})
 ipc.on('openFileDialog', (event) => {
   const result = dialog.showOpenDialog({ properties: ['openFile'] })
   if (result && result.length > 0) {

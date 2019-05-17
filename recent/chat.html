@@ -248,7 +248,7 @@
     var otherId = params[1]
     let name
     let relativeMsgId
-    document.getElementById("chatBox").src = "chatBox.html?" + isGroupChat + "&" + params[1]
+    document.getElementById("chatBox").src = "chatBox.html?" + isGroupChat + "&" + params[1] +"&" + user.id
     render()
 
     function Group() {
@@ -498,9 +498,10 @@
             menu.append(new MenuItem({
                 label: '发消息',
                 async click() {
-                    await ChatManager.asyEnsureSingleChat(id)
-                    document.location.href = "../recent/chat.html?" + isGroup + "&" + id;//isGroupChat&id
-                    await ChatManager.asytopChat(user.id, id)
+                   // await ChatManager.asyEnsureSingleChat(id)
+                 await ChatManager.asytopChat(user.id, id)
+                 parent.window.select(id)
+                 parent.window.document.getElementById(id).click()
                 },
                 visible: name ? true : false
             }))
@@ -508,10 +509,8 @@
             menu.append(new MenuItem({
                 label: '@ ' + name,
                 click() {
-                    let range = window.getSelection();
-                    let el = document.getElementById('chatBox').contentWindow.document.body
-                    el.innerText = `@${name}  `
-                    el.focus()
+                 document.getElementById("chatBox").contentWindow.document.body.focus();
+                 document.getElementById("chatBox").contentWindow.document.execCommand("insertText", false, `@${name} `);
                 },
                 visible: name ? true : false
             }))
@@ -645,29 +644,29 @@
         }
     }
 
-    function onReceiveMessage(param) {
-        let shouldRead = false
-        let shouldRefresh = false
-        const {chatId, fromUid, toUid, isFromSelf} = param
-        if (isFromSelf) {
-            if (chatId === otherId) {
-                shouldRefresh = true
-            }
-        } else {
-            if (chatId === otherId) {
-                shouldRefresh = true
-                if (isFocused) {
-                    shouldRead = true
-                }
-            }
-        }
+    async function onReceiveMessage(param) {
+     let shouldRead = false
+     let shouldRefresh = false
+     const {chatId, fromUid, toUid, isFromSelf} = param
+     if (isFromSelf) {
+      if (chatId === otherId) {
+       shouldRefresh = true
+      }
+     } else {
+      if (chatId === otherId) {
+       shouldRefresh = true
+       if (isFocused) {
+        shouldRead = true
+       }
+      }
+     }
 
-        if (shouldRead) {
-            readUnread()
-        }
-        if (shouldRefresh) {
-            refreshRecordList()
-        }
+     if (shouldRead) {
+      readUnread()
+     }
+     if (shouldRefresh) {
+      refreshRecordList()
+     }
     }
 
     function onMsgChanged(chatId) {

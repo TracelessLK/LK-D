@@ -5,7 +5,7 @@ const sqlite3 = require("../asars/sqlite3.asar");
 
 const { dbFilePath } = require('../config')
 
-const dbName = engine.getApplication().getCurrentApp().getName() || "default";
+//const dbName = engine.getApplication().getCurrentApp().getName() || "default";
 
 const db = new sqlite3.cached.Database(dbFilePath)
 

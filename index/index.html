@@ -86,6 +86,7 @@
     })
 
       const notifyNewMsg = function (param) {
+       //window.top.ipc.send('asynchronous-message')
         // filter sync message by other devices of oneself
         if (!param.isFromSelf) {
           engine.getChatManager().asyGetAllMsgNotReadNum().then((num) => {
@@ -98,6 +99,7 @@
               title: "新消息",
               body: content.replace(/&nbsp;/g,'')
             }
+            if(param.focus ===1)window.top.ipc.send('asynchronous-message')
             try {
               new window.Notification(notification.title, notification);
 

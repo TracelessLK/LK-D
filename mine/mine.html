@@ -40,7 +40,7 @@
       }
 
       function _upgrade() {
-        window.top.ipc.send("upgrade-request");
+        window.top.ipc.send("upgrade-request", { toIndexIFNot: false });
       }
 
       function test() {

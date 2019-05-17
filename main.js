@@ -409,7 +409,8 @@ function download (fileAry) {
         if (item.isPaused()) {
           changeMsg(f, 'paused')
         } else {
-          changeMsg(f, Math.round((item.getReceivedBytes() / item.getTotalBytes()) * 100) + '%')
+          //changeMsg(f, Math.round((item.getReceivedBytes() / item.getTotalBytes()) * 100) + '%')
+          changeMsg(f, '0%')
         }
       }
     })

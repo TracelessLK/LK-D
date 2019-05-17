@@ -80,7 +80,7 @@
                 &nbsp;&nbsp;网络连接已断开
             </div>
         </div>
-        <div id="recent" style="width:250px;flex:1;overflow: auto;border-right: 1px solid rgb(229,229,229); ">
+        <div id="recent"  style="width:250px;flex:1;overflow: auto;border-right: 1px solid rgb(229,229,229); ">
         </div>
     </div>
     <div style="flex:1;height:100%;display: flex">
@@ -291,7 +291,7 @@
                          </div>`
               : `<img src="${person.pic ? person.pic : '../images/1024x1024.png'}"  style="width:17%;height:60%;border-radius:3px;"/>&nbsp;&nbsp;
                         <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
-                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${person.name}</div>
+                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus?'⭐':''}${person.name}</div>
                                <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold">${timeStr}</div>
                                <div style="border:red solid 0px;line-height:25px;color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?data:draft}</div>
                          </div>`
@@ -332,5 +332,6 @@
         ChatManager.un("msgRead", refreshRecentList);
         ChatManager.un("msgReceived", refreshRecentList);
     });
+
 </script>
 </html>

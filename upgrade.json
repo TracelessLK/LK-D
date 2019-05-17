@@ -1,5 +1,5 @@
 {
-  "version":"0.0.63",
+  "version":"0.0.64",
   "changeList":[
     {
       "version":"0.0.2",
@@ -400,6 +400,18 @@
         "index/index.bundle.js",
         "main.bundle.js",
         "main.js"
+      ],
+      "detail":["test"]
+    },
+    {
+      "version":"0.0.64",
+      "files":[
+        "recent/chat.html",
+        "recent/recent.html",
+        "index/index.html",
+        "index/index.bundle.js",
+        "store/ElecSqlite.js",
+        "main.bundle.js"
       ],
       "detail":["test"]
     }

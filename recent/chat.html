@@ -509,10 +509,8 @@
             menu.append(new MenuItem({
                 label: '@ ' + name,
                 click() {
-                    let range = window.getSelection();
-                    let el = document.getElementById('chatBox').contentWindow.document.body
-                    el.innerText = `@${name}  `
-                    el.focus()
+                 document.getElementById("chatBox").contentWindow.document.body.focus();
+                 document.getElementById("chatBox").contentWindow.document.execCommand("insertText", false, `@${name} `);
                 },
                 visible: name ? true : false
             }))

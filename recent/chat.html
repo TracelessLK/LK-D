@@ -627,7 +627,7 @@
       html += `<div id="${i.name}"  onmouseover="hover('${i.name}')" onmouseout="leave('${i.name}')" style="border:0px red solid;flex:1;display: flex;width: 100%;margin-left: 0px;margin-top: 7px;align-items: center;"><img  src=${i.pic?i.pic:"../images/1024x1024.png"} style="width:30px;margin-left: 5px;height:30px;border-radius:5px;" name="${i.name}" /><div id="remind" style="border: 0px red solid; width: 100px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;">${i.name}&nbsp;</div></div>`;
      }
      document.getElementById("remind").innerHTML = html
-     document.getElementById("title").innerText = params[2]
+     document.getElementById("title").innerText = decodeURI(params[2])
      document.getElementById("count").innerText = isGroupChat ? `(${all.length})` : ''
         const recordAry = await ChatManager.asyGetMsgs(userId, otherId, config.recordNumber)
         relativeMsgId = null

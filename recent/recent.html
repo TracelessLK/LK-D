@@ -205,7 +205,7 @@
     }
 
     function showChatBox(isGroupChat, id, name) {
-      document.getElementById("frame").src = "chat.html?" + isGroupChat + "&" + id + "&" + name;
+      document.getElementById("frame").src =encodeURI("chat.html?" + isGroupChat + "&" + id + "&" + name);
     }
 
     async function refreshRecentList() {

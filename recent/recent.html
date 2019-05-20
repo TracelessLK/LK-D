@@ -98,6 +98,8 @@
     const user = lkapp.getCurrentUser()
     const ChatManager = engine.get('ChatManager')
     const ContactManager = engine.get('ContactManager')
+    var ps = document.location.href.substring(document.location.href.indexOf("?") + 1);
+    var params = ps.split("&")
     let selected = "";
     let firstChatId
     let selectID = ''
@@ -193,17 +195,17 @@
       document.getElementById(chatId).style.backgroundColor = "rgb(214,214,214)";
     }
 
-    function chat(chatId, isGroupChat) {
+    function chat(chatId, isGroupChat, name) {
      refreshRecentList()
       select(chatId)
       if (selectID !== chatId) {
-        showChatBox(isGroupChat, chatId);
+        showChatBox(isGroupChat, chatId, name);
       }
       selectID = chatId
     }
 
-    function showChatBox(isGroupChat, id) {
-      document.getElementById("frame").src = "chat.html?" + isGroupChat + "&" + id;
+    function showChatBox(isGroupChat, id, name) {
+      document.getElementById("frame").src = "chat.html?" + isGroupChat + "&" + id + "&" + name;
     }
 
     async function refreshRecentList() {
@@ -272,7 +274,7 @@
 
             html += `<div id="${chatId}"`
             html += `style="border:0px red solid;border-bottom: 1px solid rgb(238,238,238);background-color:rgb(251,251,251); width:100%;height:70px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;"  onmouseover="hover('${chatId}',${i},${isGroup})" `
-            html += `onmouseout="leave('${chatId}',${i},${isGroup})" oncontextmenu="remder('${chatId}','${isGroup}','${MessageCeiling}',${focus})" onclick="chat('${chatId}', ${isGroup})">  `
+            html += `onmouseout="leave('${chatId}',${i},${isGroup})" oncontextmenu="remder('${chatId}','${isGroup}','${MessageCeiling}',${focus})" onclick="chat('${chatId}', ${isGroup},'${isGroup?re.name:person.name}')">  `
 
             html += `<div id='${i}'onmouseover="hovers('${chatId}',${i}) " onmouseout="leaves('${chatId}',${i})" onclick="DeleteChat('${chatId}','${isGroup}')"  style="border:red 0px solid;margin-left: -5px;visibility: hidden;color:rgb(188,188,188);width:6%;text-align: center;font-weight: bold;font-family: "Abadi MT Condensed Light"" ></div>`
             //
@@ -311,8 +313,8 @@
       if (selected) {
         select(selected);
       } else if (firstChatId) {
-        select(firstChatId)
-        document.getElementById(firstChatId).click()
+        select(!params[1]?firstChatId:params[1])
+        document.getElementById(!params[1]?firstChatId:params[1]).click()
       }
     }
 

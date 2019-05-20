@@ -18,7 +18,7 @@ const config = {
   // 数据库文件路径
   dbFilePath: path.resolve(rootDir, 'store/LK.db'),
   // 展示消息记录数量
-  recordNumber: 200
+  recordNumber: 50
 }
 
 const unversionedPath = path.resolve(__dirname, 'unversioned.js')

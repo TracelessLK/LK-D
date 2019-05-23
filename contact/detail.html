@@ -62,6 +62,8 @@
 <script>
     document.body.className = window.top.theme;
     const { engine } = window.top
+    const lkapp = engine.getApplication().getCurrentApp()
+    const user = lkapp.getCurrentUser()
     const ChatManager = engine.get('ChatManager')
     const ps = document.location.href.substring(document.location.href.indexOf("?") + 1);
     const params = ps.split("&");
@@ -92,7 +94,9 @@
 
     async function sendMessage() {
       await ChatManager.asyEnsureSingleChat(id)
-      document.location.href = "../recent/chat.html?" + isGroup + "&" + id;// isGroupChat&id
+      await ChatManager.asytopChat(user.id, id)
+      //document.location.href = "../recent/chat.html?" + isGroup + "&" + id;// isGroupChat&id
+      parent.window.document.location.href = "../recent/recent.html?" + isGroup + "&" + id;// isGroupChat&id
     }
 </script>
 </body>

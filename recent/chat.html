@@ -356,10 +356,8 @@
             }
             document.getElementById("GroupMembers").innerHTML = html
         } else {
-            document.location.href = "../contact/detail.html?" + otherId + "&" + name + "&" + isGroupChat;
+            document.location.href = "../contact/detail.html?" + otherId + "&" + decodeURI(params[2]) + "&" + isGroupChat;
         }
-
-
     }
 
     async function getstate(msgId) {
@@ -382,7 +380,7 @@
         if (state === 0) {
             return `<img src="../images/ajax-loader.gif" width="18px"height="18px"style="margin-top: 2px"/>`;
         } else if (state === 1) {
-            return "refresh";
+            return `<img src="../images/Arrow.png" width="18px"height="18px"style="margin-top: 2px"/>`;
         } else if (state === 2) {
             return isGroupChat ? await getstate(msgId) : '未读';
         } else if (state === 3) {
@@ -663,7 +661,7 @@
         if (event.target.tagName == "IMG") {
             var w = event.target.getAttribute("w")
             var h = event.target.getAttribute('h')
-
+            console.log(event.target)
             window.top.ipc.send("openImageBrowser", {
                 width: parseInt(w),
                 height: parseInt(h),

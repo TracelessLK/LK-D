@@ -1,5 +1,5 @@
 {
-  "version":"0.0.67",
+  "version":"0.0.68",
   "changeList":[
     {
       "version":"0.0.2",
@@ -439,6 +439,17 @@
         "index/index.bundle.js",
         "config/index.js",
         "contact/detail.html",
+        "recent/recent.html",
+        "recent/chat.html"
+      ],
+      "detail":["test"]
+    },
+    {
+      "version":"0.0.68",
+      "files":[
+        "index/index.bundle.js",
+        "images/Arrow.png",
+        "images/sou.png",
         "recent/recent.html",
         "recent/chat.html"
       ],

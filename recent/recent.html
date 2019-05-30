@@ -64,13 +64,40 @@
             margin-top: 14px;
             margin-right: 10px;
         }
+        input[type=search] {
+            width:100%;
+            height:30px;
+            background-image:url(../images/sou.png);
+            background-repeat: no-repeat;
+            background-size: 25px;
+            background-position:5px center;
+            float:left;
+            padding:0 0 0 40px;
+            border-radius:18px;
+            border:1px gray solid;
+            font-size: 14px;
+            padding-right:10px
+        }
+        input:focus{
+            outline: none;
+        }
+        .search {
+            margin:7px;
+        }
     </style>
     <link href="../css/index.css" rel="stylesheet"></link>
 </head>
 <body>
 <div class="content">
     <div style="height:100%;width:250px;display: flex;flex-direction: column;align-items: center;overflow: hidden">
-        <div class="title" style="background-color: rgb(251,251,251);">消息
+        <div class="title" style="background-color: rgb(251,251,251);">
+            消息
+            <!--<div class="search">-->
+                <!--<form>-->
+                    <!--<input placeholder="搜索"type="search" id="searchID" class="kuan" oninput="search()" onFocus="searchFocus()"onBlur="searchBlur()" >-->
+                    <!--<button type="submit"></button>-->
+                <!--</form>-->
+            <!--</div>-->
         </div>
         <div id="offlineWarning"
              style=" width: 250px; height: 35px; cursor: pointer; padding-left: 30px; display: none; flex-direction: row; justify-content: flex-start; align-items: center;background-color: rgb(246,216,178) ">
@@ -105,7 +132,62 @@
     let selectID = ''
     const { contextMenu } = window.top
     const { remote } = window.top
+    const { _ } = window.top
     const { Menu, MenuItem } = remote;
+     async function search() {
+      const data = document.getElementById('searchID').value
+      if (data.length === 0) refreshRecentList()
+      let Record = await ChatManager.asyGetMessageSearch(user.id, data)
+      let html = ''
+      if (Record.length > 0) {
+       for (let i of Record) {
+        const all = await ChatManager.asyGetChat(user.id, i.chatId)
+        if (all) {
+         const {id: chatId, isGroup, MessageCeiling, focus, reserve1}=all
+         const person = await ContactManager.asyGet(user.id, all.id)
+         let imghtml = ``
+         if (isGroup) {
+          let Imgdata = await ContactManager.asyGetgroupMemberImg(chatId)
+          Imgdata = Imgdata.slice(0, 4)
+          for (let j = 0; j < Imgdata.length; j++) {
+           if (Imgdata.length === 3) {
+            imghtml += `<div style="${Imgdata[j] === Imgdata[0] ? 'width:100%;text-align:center' : 'width:50%'};margin:0;padding:0;float:left;;height: 50%;border:red 0px solid">
+                                          <img src="${Imgdata[j].pic === null || Imgdata[j].pic === "" ? '../images/1024x1024.png' : Imgdata[j].pic}" style="${Imgdata[j] === Imgdata[0] ? 'width:50%;text-align:center' : 'width:100%'};height:100%;">
+                                         </div>`
+           } else {
+            imghtml += `<div style="${Imgdata.length === 2 ? 'margin-top:10px' : 'margin:0'};padding:0;float:left;width:50%;height: 50%;border:0px solid red">
+                                         <img src="${Imgdata[j].pic === null || Imgdata[j].pic === "" ? '../images/1024x1024.png' : Imgdata[j].pic}" style="width:100%;height:100%;">
+                                        </div>`
+           }
+          }
+         }
+         const img =  isGroup ? `<div style="width:17%;height: 60%;border: solid 1px rgb(218,223,225);background-color: rgb(221,222,224);border-radius:3px; overflow:hidden;float: left">
+                                   ${imghtml} </div>&nbsp;&nbsp;`:`<img src=${person.pic ? person.pic : '../images/1024x1024.png'}  style="width:17%;height:60%;border-radius:3px;"/>&nbsp;&nbsp;`
+         html+=`<div id="${chatId}" onmousedown="event.preventDefault();" style="border-bottom: 1px solid rgb(238,238,238);background-color:rgb(251,251,251); width:100%;height:70px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;" onclick="chat('${chatId}', ${isGroup},'${isGroup?all.name:person.name}')">`
+         html +=`${img}<div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
+                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${isGroup ? all.name : person.name}</div>
+                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold;"></div>
+                               <div style="border:red solid 0px;line-height:25px; color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${i.content}</div>
+                         </div></div>`
+
+        }
+       }
+      }
+
+
+      document.getElementById("recent").innerHTML = html;
+
+     }
+    function searchFocus () {
+     document.getElementById("recent").innerHTML = '';
+
+    }
+
+    function searchBlur() {
+     document.getElementById('searchID').value=''
+     refreshRecentList()
+
+    }
     async function DeleteChat(chatId, isGroup) {
       if (isGroup !== '1') {
         await ChatManager.asyDeleteChat(user.id, chatId)
@@ -123,7 +205,7 @@
        }else {
         await ChatManager.asyMessageCeiling(Date.now(),user.id, chatId)
        }
-       location.reload()
+       refreshRecentList()
       },
      }))
      menu.append(new MenuItem({type: 'separator'}))
@@ -135,7 +217,7 @@
        }else {
         await ChatManager.asyMessageFocus(1,user.id, chatId)
        }
-       location.reload()
+       refreshRecentList()
       },
      }))
      menu.append(new MenuItem({type: 'separator'}))
@@ -143,7 +225,8 @@
         label: '删除',
         async click() {
           await ChatManager.asyDeleteChat(user.id, chatId)
-          location.reload()
+         //refreshRecentList()
+         location.reload()
         },
         visible: isGroupChat !== '1'
       }))
@@ -186,22 +269,22 @@
       }
     }
 
-    function select(chatId) {
-      // console.log({chatId, selected})
-      if (selected) {
-        document.getElementById(selected).style.backgroundColor ="rgb(251,251,251)";
-      }
-      selected = chatId
-      document.getElementById(chatId).style.backgroundColor = "rgb(214,214,214)";
+    async function select(chatId) {
+     if (selected) {
+      document.getElementById(selected).style.backgroundColor = "rgb(251,251,251)";
+     }
+     selected = chatId
+     document.getElementById(chatId).style.backgroundColor = "rgb(214,214,214)";
     }
 
-    function chat(chatId, isGroupChat, name) {
+    async function chat(chatId, isGroupChat, name, num) {
+     //console.log(await ChatManager.asyGetChat(user.id, chatId))
+     select(chatId)
+     if (selectID !== chatId) {
+      showChatBox(isGroupChat, chatId, name);
+     }
+     selectID = chatId
      refreshRecentList()
-      select(chatId)
-      if (selectID !== chatId) {
-        showChatBox(isGroupChat, chatId, name);
-      }
-      selectID = chatId
     }
 
     function showChatBox(isGroupChat, id, name) {
@@ -211,13 +294,11 @@
     async function refreshRecentList() {
       const all = await ChatManager.asyGetAll(user.id)
       let html = ``
-
       let i = 0;
       if (all) {
         if (all.length) {
           firstChatId = all[0].id
         }
-        // console.log({all})
         for (; i < all.length; i++) {
           const re = all[i];
           const { id: chatId, isGroup, MessageCeiling, focus, reserve1} = re
@@ -271,32 +352,36 @@
                 }
               }
             }
-
             html += `<div id="${chatId}"`
             html += `style="border:0px red solid;border-bottom: 1px solid rgb(238,238,238);background-color:rgb(251,251,251); width:100%;height:70px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;"  onmouseover="hover('${chatId}',${i},${isGroup})" `
             html += `onmouseout="leave('${chatId}',${i},${isGroup})" oncontextmenu="remder('${chatId}','${isGroup}','${MessageCeiling}',${focus})" onclick="chat('${chatId}', ${isGroup},'${isGroup?re.name:person.name}')">  `
-
             html += `<div id='${i}'onmouseover="hovers('${chatId}',${i}) " onmouseout="leaves('${chatId}',${i})" onclick="DeleteChat('${chatId}','${isGroup}')"  style="border:red 0px solid;margin-left: -5px;visibility: hidden;color:rgb(188,188,188);width:6%;text-align: center;font-weight: bold;font-family: "Abadi MT Condensed Light"" ></div>`
-            //
             const newMsgNum = await ChatManager.asyGetNewMsgNum(chatId)
             const draft = `<sapn style="color: red">[草稿] </sapn>${reserve1?(reserve1.indexOf('<img width=')!==-1?'[图片]':reserve1):''}`
             const remind = `<span id = '@${chatId}' style="color: red">${data.indexOf('@' + user.name) !== -1 && newMsgNum>0? '[有人@我]' : '[有全体消息]'}</span>`
-            //html += `<img  src="../images/sjx.png" style="width:10px;height:10px;margin-top: -23%;margin-left: -6.5%;transform:rotate(90deg);display: ${MessageCeiling!==null?"block":"none"}"/>`
-            html += isGroup
-              ? `<div style="width:17%;height: 60%;border: solid 1px rgb(218,223,225);background-color: rgb(221,222,224);border-radius:3px; overflow:hidden;float: left">
-                               ${imghtml}
-                         </div>&nbsp;&nbsp;
-                        <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
-                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus?'⭐':''}${re.name}</div>
+            const img =  isGroup ? `<div style="width:17%;height: 60%;border: solid 1px rgb(218,223,225);background-color: rgb(221,222,224);border-radius:3px; overflow:hidden;float: left">
+                                        ${imghtml}
+                                    </div>&nbsp;&nbsp;`:`<img src=${person.pic ? person.pic : '../images/1024x1024.png'}  style="width:17%;height:60%;border-radius:3px;"/>&nbsp;&nbsp;`
+           html +=`${img}<div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
+                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus ? '⭐' : ''}${isGroup?re.name:person.name}</div>
                                <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold;">${timeStr}</div>
-                               <div style="border:red solid 0px;line-height:25px; color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?((data.indexOf('@' + user.name) !== -1 && newMsgNum>0)||((data.indexOf('@所有人') !== -1 && newMsgNum>0))? remind : '')+MsgsOneDataName+data:draft}</div>
+                               <div style="border:red solid 0px;line-height:25px; color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1 === null || reserve1 === "" || selectID === chatId || newMsgNum > 0 ? ((data.indexOf('@' + user.name) !== -1 && newMsgNum > 0) || ((data.indexOf('@所有人') !== -1 && newMsgNum > 0)) ? remind : '') + MsgsOneDataName + data : draft}</div>
                          </div>`
-              : `<img src="${person.pic ? person.pic : '../images/1024x1024.png'}"  style="width:17%;height:60%;border-radius:3px;"/>&nbsp;&nbsp;
-                        <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
-                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus?'⭐':''}${person.name}</div>
-                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold">${timeStr}</div>
-                               <div style="border:red solid 0px;line-height:25px;color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?data:draft}</div>
-                         </div>`
+           // html += isGroup
+           //    ? `<div style="width:17%;height: 60%;border: solid 1px rgb(218,223,225);background-color: rgb(221,222,224);border-radius:3px; overflow:hidden;float: left">
+           //                     ${imghtml}
+           //               </div>&nbsp;&nbsp;
+           //              <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
+           //                     <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus?'⭐':''}${re.name}</div>
+           //                     <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold;">${timeStr}</div>
+           //                     <div style="border:red solid 0px;line-height:25px; color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?((data.indexOf('@' + user.name) !== -1 && newMsgNum>0)||((data.indexOf('@所有人') !== -1 && newMsgNum>0))? remind : '')+MsgsOneDataName+data:draft}</div>
+           //               </div>`
+           //    : `<img src="${person.pic ? person.pic : '../images/1024x1024.png'}"  style="width:17%;height:60%;border-radius:3px;"/>&nbsp;&nbsp;
+           //              <div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
+           //                     <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus?'⭐':''}${person.name}</div>
+           //                     <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold">${timeStr}</div>
+           //                     <div style="border:red solid 0px;line-height:25px;color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1===null||reserve1===""||selectID===chatId||newMsgNum>0?data:draft}</div>
+           //               </div>`
            html += `<img  src="../images/sjx.png" style="border:0px red solid;float:left;width:4%;height:15%;margin-top:-23%;margin-left:0%;transform:rotate(180deg);visibility: ${MessageCeiling!==null?"visible":"hidden"}"/>`
             // console.log({newMsgNum})
             if (newMsgNum) {
@@ -311,21 +396,14 @@
 
       document.getElementById("recent").innerHTML = html;
       if (selected) {
-        select(selected);
+       select(selected);
       } else if (firstChatId) {
         select(!params[1]?firstChatId:params[1])
         document.getElementById(!params[1]?firstChatId:params[1]).click()
       }
     }
-
+    ChatManager.on("msgChanged", refreshRecentList)
     refreshRecentList();
-    ChatManager.on("msgChanged", () =>{
-      // console.log('msgChanged')
-     // window.top.ipc.on('asynchronous-reply', (event, arg) => {
-     //  console.log(arg) // prints "pong"
-     // })
-      refreshRecentList()
-    })
     ChatManager.on("msgRead", refreshRecentList);
     ChatManager.on("msgReceived", refreshRecentList);
 

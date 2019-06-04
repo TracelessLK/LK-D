@@ -58,8 +58,22 @@
 <script>
     const { engine } = window.top
     const ChatManager = engine.get('ChatManager')
-    start()
+    const ipc = require('electron').ipcRenderer;
+    //start()
+    //ipc.send("start-download");
+    ipc.send('open-information-dialog')
+    ipc.on('information-dialog-selection', function (event, arg) {
+        if(arg) {
+         ipc.send("start-download");
+        }
+     start()
+    })
+    ipc.on("refresh",(event, arg)=>{
+     if (!arg){
+      ipc.send("restart");
+     }
 
+    });
     async function start() {
       const LKApplication = engine.getApplication();
       const db = require('../store/ElecSqlite');
@@ -118,10 +132,10 @@
       engine.getChatManager().on("msgReceived", notifyNewMsg);
       engine.getChatManager().on("msgRead", notifyReadMsg);
 
-      const checkVersion = function () {
-        window.top.ipc.send("upgrade-request", { toIndexIFNot: false });
-      }
-      LKApplication.getCurrentApp().on("currentUserChanged", checkVersion)
+      // const checkVersion = function () {
+      //   window.top.ipc.send("upgrade-request", { toIndexIFNot: false });
+      // }
+      // LKApplication.getCurrentApp().on("currentUserChanged", checkVersion)
     }
 </script>
 </html>

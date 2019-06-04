@@ -74,7 +74,7 @@
        } else {
         pasteImg()
        }
-      } else if (event.altKey && event.keyCode == 13) {
+      } else if (event.ctrlKey && event.keyCode == 13) {
        event.preventDefault()
        const selection = window.getSelection()
        // selection.deleteFromDocument();

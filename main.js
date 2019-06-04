@@ -24,6 +24,9 @@ const packageJSON = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.
 const isProduction = __dirname.includes('Resources/app/')
 const config = require('./config/index')
 const { getGoldenHeight } = require('./util/Independent')
+const upgrade = require('./upgrade')
+const _ = require('lodash')
+
 
 const { minWidth, minHeight, checkUpdateTimeout } = config
 
@@ -56,13 +59,15 @@ function createWindow () {
     width: initialWidth,
     height: getGoldenHeight(initialWidth),
     minWidth,
-    minHeight
+    minHeight,
+    frame: false,
+    titleBarStyle: 'hidden'
   })
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, pageDir + '/index/loading.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+  // mainWindow.loadURL(url.format({
+  //   pathname: path.join(__dirname, pageDir + '/index/loading.html'),
+  //   protocol: 'file:',
+  //   slashes: true
+  // }))
   global.mainWindow = mainWindow
   global.appVersion = packageJSON.version
 
@@ -72,19 +77,27 @@ function createWindow () {
 
   // and load the index.html of the app.
   checkUpdate((hasNew) => {
-    if (hasNew) {
-      mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, pageDir + '/index/update.html'),
-        protocol: 'file:',
-        slashes: true
-      }))
-    } else {
-      mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, pageDir + '/index/index.html'),
-        protocol: 'file:',
-        slashes: true
-      }))
-    }
+    // if (hasNew) {
+    //   mainWindow.loadURL(url.format({
+    //     pathname: path.join(__dirname, pageDir + '/index/update.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    //   }))
+    // } else {
+    //   mainWindow.loadURL(url.format({
+    //     pathname: path.join(__dirname, pageDir + '/index/index.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    //   }))
+    // }
+    mainWindow.loadURL(url.format({
+      pathname: path.join(__dirname, pageDir + '/index/index.html'),
+      protocol: 'file:',
+      slashes: true
+    }))
+    ipc.on('open-information-dialog', (event) => {
+      event.sender.send('information-dialog-selection', hasNew)
+    })
   })
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -165,7 +178,10 @@ ipc.on('openFileDialog', (event) => {
 
 let imageBrowser
 ipc.on('openImageBrowser', (event, arg) => {
-  global.imageHtml = arg.html
+  global.width = arg.width
+  global.height = arg.height
+  global.src = arg.src
+  //global.imageHtml = arg.html
   if (!imageBrowser) {
     imageBrowser = new BrowserWindow()
 
@@ -343,25 +359,28 @@ ipc.on('remoteVersion-request', (event) => {
 
 ipc.on('upgrade-request', (event, arg) => {
   checkUpdate((hasNew) => {
-    if (hasNew) {
-      mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, pageDir + '/index/update.html'),
-        protocol: 'file:',
-        slashes: true
-      }))
-    } else if (arg.toIndexIFNot !== false) {
-      mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, pageDir + '/index/index.html'),
-        protocol: 'file:',
-        slashes: true
-      }))
+    if (arg.toIndexIFNot === false) {
+      event.sender.send('refresh', 0)
     }
+    // if (hasNew) {
+    //   mainWindow.loadURL(url.format({
+    //     pathname: path.join(__dirname, pageDir + '/index/update.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    //   }))
+    // } else if (arg.toIndexIFNot !== false) {
+    //   mainWindow.loadURL(url.format({
+    //     pathname: path.join(__dirname, pageDir + '/index/index.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    //   }))
+    // }
   })
 })
 const upgradeMessages = new Map()
 
-ipc.on('start-download', () => {
-  download(files)
+ipc.on('start-download', (event) => {
+  download(files, event)
 })
 
 ipc.on('restart', () => {
@@ -369,15 +388,16 @@ ipc.on('restart', () => {
   app.exit(0)
 })
 
-function getUpgradeMessages () {
-  let html = ''
-  upgradeMessages.forEach((v, k) => {
-    html += k + '---------------------' + v + '<br>'
-  })
-  return html
-}
+// function getUpgradeMessages () {
+//   let html = ''
+//   upgradeMessages.forEach((v, k) => {
+//     html += k + '---------------------' + v + '<br>'
+//   })
+//   return html
+// }
 
-function download (fileAry) {
+function download (fileAry, events) {
+  const message = _.last(upgrade.changeList).content
   const baseURI = 'https://raw.githubusercontent.com/TracelessLK/LK-D/publish/'
   const index = baseURI.length
 
@@ -386,8 +406,8 @@ function download (fileAry) {
 
   function changeMsg (f, m) {
     upgradeMessages.set(f, m)
-    global.upgradeMessage = getUpgradeMessages()
-    mainWindow.webContents.executeJavaScript('update()')
+    //global.upgradeMessage = getUpgradeMessages()
+    //mainWindow.webContents.executeJavaScript('update()')
   }
   //
   const tmpDir = path.join(__dirname, '_tmp')
@@ -398,30 +418,31 @@ function download (fileAry) {
     // 设置文件存放位置
     const f = item.getURL().substring(index)
     item.setSavePath(path.join(tmpDir, f))
-    item.on('updated', (event2, state) => {
-      if (state === 'interrupted') {
-        changeMsg(f, 'interrupted')
-        if (item.canResume()) {
-          item.resume()
-        } else {
-          changeMsg(f, "interrupted and can't resume")
-        }
-      } else if (state === 'progressing') {
-        if (item.isPaused()) {
-          changeMsg(f, 'paused')
-        } else {
-          changeMsg(f, Math.floor( item.getReceivedBytes()) + 'kb')
-        }
-      }
-    })
+    // item.on('updated', (event2, state) => {
+    //   console.log(state)
+    //   if (state === 'interrupted') {
+    //     changeMsg(f, 'interrupted')
+    //     if (item.canResume()) {
+    //       item.resume()
+    //     } else {
+    //       changeMsg(f, "interrupted and can't resume")
+    //     }
+    //   } else if (state === 'progressing') {
+    //     if (item.isPaused()) {
+    //       changeMsg(f, 'paused')
+    //     } else {
+    //       changeMsg(f, Math.floor(item.getReceivedBytes()) + 'kb')
+    //     }
+    //   }
+    // })
     item.once('done', (event2, state) => {
       count++
-      if (state === 'completed') {
-        count2++
-        changeMsg(f, '100%')
-      } else {
-        changeMsg(f, `Download failed: ${state}`)
-      }
+      // if (state === 'completed') {
+      //   count2++
+      //   changeMsg(f, '100%')
+      // } else {
+      //   changeMsg(f, `Download failed: ${state}`)
+      // }
       if (count === fileAry.length) {
         if (count2 === count) {
           let targetDir = __dirname
@@ -435,17 +456,29 @@ function download (fileAry) {
           copyFiles(tmpDir, targetDir)
           deleteFolder(tmpDir)
         }
-        mainWindow.webContents.executeJavaScript('complete()')
+        const options = {
+          type: 'info',
+          title: '信息',
+          message: "检测到新版本是否升级？",
+          detail: message.join('\n\n'),
+          buttons: ['是', '否'],
+          icon: './images/traceless.png'
+        }
+        dialog.showMessageBox(options, (index) => {
+          events.sender.send('refresh', index)
+        })
+        //mainWindow.webContents.executeJavaScript('complete()')
       }
     })
   })
 
   fileAry.forEach((f) => {
-    changeMsg(f, 'downloading')
+    //console.log(fileAry)
+    //changeMsg(f, 'downloading')
     mainWindow.webContents.downloadURL(baseURI + f)
   })
   if (fileAry.length === 0) {
-    mainWindow.webContents.executeJavaScript('complete()')
+    //mainWindow.webContents.executeJavaScript('complete()')
   }
 }
 

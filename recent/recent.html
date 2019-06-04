@@ -363,7 +363,7 @@
                                         ${imghtml}
                                     </div>&nbsp;&nbsp;`:`<img src=${person.pic ? person.pic : '../images/1024x1024.png'}  style="width:17%;height:60%;border-radius:3px;"/>&nbsp;&nbsp;`
            html +=`${img}<div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
-                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus ? '⭐' : ''}${isGroup?re.name:person.name}</div>
+                               <div style="border:red solid 0px;width: 50%;line-height:17px; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${focus ? '<span title="收到消息会弹出窗口">⭐</span>' : ''}${isGroup?re.name:person.name}</div>
                                <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold;">${timeStr}</div>
                                <div style="border:red solid 0px;line-height:25px; color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${reserve1 === null || reserve1 === "" || selectID === chatId || newMsgNum > 0 ? ((data.indexOf('@' + user.name) !== -1 && newMsgNum > 0) || ((data.indexOf('@所有人') !== -1 && newMsgNum > 0)) ? remind : '') + MsgsOneDataName + data : draft}</div>
                          </div>`

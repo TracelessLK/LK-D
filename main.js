@@ -60,8 +60,8 @@ function createWindow () {
     height: getGoldenHeight(initialWidth),
     minWidth,
     minHeight,
-    frame: false,
-    titleBarStyle: 'hidden'
+    // frame: false,
+    // titleBarStyle: 'hidden',
   })
   // mainWindow.loadURL(url.format({
   //   pathname: path.join(__dirname, pageDir + '/index/loading.html'),

@@ -657,11 +657,12 @@
     }
 
     function showBiggerImage() {
+        //event.target.tagName
         var widthReg = /w=[\"\'](\d+(\.\d+)?)[\"\']/ig;
         var heightReg = /h=[\"\'](\d+(\.\d+)?)[\"\']/ig;
         var winW=electron.screen.getPrimaryDisplay().workAreaSize.width;
         var winH=electron.screen.getPrimaryDisplay().workAreaSize.height;
-        if (event.target.tagName == "IMG") {
+        if (!event.target.oncontextmenu) {
             var w = event.target.getAttribute("w")
             var h = event.target.getAttribute('h')
             let a = w>winW?(600/w):(500/h)

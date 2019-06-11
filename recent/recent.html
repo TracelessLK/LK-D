@@ -66,23 +66,26 @@
         }
         input[type=search] {
             width:100%;
-            height:30px;
+            height:25px;
+            background-color:rgb(230, 230, 230);
             background-image:url(../images/sou.png);
             background-repeat: no-repeat;
-            background-size: 25px;
-            background-position:5px center;
+            background-size: 13px;
+            background-position:8px center;
             float:left;
-            padding:0 0 0 40px;
-            border-radius:18px;
-            border:1px gray solid;
-            font-size: 14px;
-            padding-right:10px
+            padding:0 0 0 25px;
+            border-radius:5px;
+            border:0px gray solid;
+            font-size: 12px;
+            padding-right:5px
         }
         input:focus{
             outline: none;
+            /*outline:3px solid gray;*/
+            box-shadow: 0 0 0 2px gray;
         }
         .search {
-            margin:7px;
+            margin:10px 10px 10px 14px;
         }
     </style>
     <link href="../css/index.css" rel="stylesheet"></link>
@@ -91,13 +94,13 @@
 <div class="content">
     <div style="height:100%;width:250px;display: flex;flex-direction: column;align-items: center;overflow: hidden">
         <div class="title" style="background-color: rgb(251,251,251);">
-            消息
-            <!--<div class="search">-->
-                <!--<form>-->
-                    <!--<input placeholder="搜索"type="search" id="searchID" class="kuan" oninput="search()" onFocus="searchFocus()"onBlur="searchBlur()" >-->
-                    <!--<button type="submit"></button>-->
-                <!--</form>-->
-            <!--</div>-->
+            <!--消息-->
+            <div class="search">
+                <form>
+                    <input class="kuan"id="searchID" onBlur="searchBlur()" onFocus="searchFocus()" oninput="refreshRecentList(1)" placeholder="搜索"type="search" >
+                    <button type="submit"></button>
+                </form>
+            </div>
         </div>
         <div id="offlineWarning"
              style=" width: 250px; height: 35px; cursor: pointer; padding-left: 30px; display: none; flex-direction: row; justify-content: flex-start; align-items: center;background-color: rgb(246,216,178) ">
@@ -134,53 +137,8 @@
     const { remote } = window.top
     const { _ } = window.top
     const { Menu, MenuItem } = remote;
-     async function search() {
-      const data = document.getElementById('searchID').value
-      if (data.length === 0) refreshRecentList()
-      let Record = await ChatManager.asyGetMessageSearch(user.id, data)
-      let html = ''
-      if (Record.length > 0) {
-       for (let i of Record) {
-        const all = await ChatManager.asyGetChat(user.id, i.chatId)
-        if (all) {
-         const {id: chatId, isGroup, MessageCeiling, focus, reserve1}=all
-         const person = await ContactManager.asyGet(user.id, all.id)
-         let imghtml = ``
-         if (isGroup) {
-          let Imgdata = await ContactManager.asyGetgroupMemberImg(chatId)
-          Imgdata = Imgdata.slice(0, 4)
-          for (let j = 0; j < Imgdata.length; j++) {
-           if (Imgdata.length === 3) {
-            imghtml += `<div style="${Imgdata[j] === Imgdata[0] ? 'width:100%;text-align:center' : 'width:50%'};margin:0;padding:0;float:left;;height: 50%;border:red 0px solid">
-                                          <img src="${Imgdata[j].pic === null || Imgdata[j].pic === "" ? '../images/1024x1024.png' : Imgdata[j].pic}" style="${Imgdata[j] === Imgdata[0] ? 'width:50%;text-align:center' : 'width:100%'};height:100%;">
-                                         </div>`
-           } else {
-            imghtml += `<div style="${Imgdata.length === 2 ? 'margin-top:10px' : 'margin:0'};padding:0;float:left;width:50%;height: 50%;border:0px solid red">
-                                         <img src="${Imgdata[j].pic === null || Imgdata[j].pic === "" ? '../images/1024x1024.png' : Imgdata[j].pic}" style="width:100%;height:100%;">
-                                        </div>`
-           }
-          }
-         }
-         const img =  isGroup ? `<div style="width:17%;height: 60%;border: solid 1px rgb(218,223,225);background-color: rgb(221,222,224);border-radius:3px; overflow:hidden;float: left">
-                                   ${imghtml} </div>&nbsp;&nbsp;`:`<img src=${person.pic ? person.pic : '../images/1024x1024.png'}  style="width:17%;height:60%;border-radius:3px;"/>&nbsp;&nbsp;`
-         html+=`<div id="${chatId}" onmousedown="event.preventDefault();" style="border-bottom: 1px solid rgb(238,238,238);background-color:rgb(251,251,251); width:100%;height:70px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;" onclick="chat('${chatId}', ${isGroup},'${isGroup?all.name:person.name}')">`
-         html +=`${img}<div id="One${chatId}" style="border:red solid 0px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width:72%;height: 60%;margin-left: 0px;margin-top: 0px;float: left" >
-                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${isGroup ? all.name : person.name}</div>
-                               <div style="border:red solid 0px;width: 50%; height: 50%;font-weight: bold;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left;text-align: right;color: rgb(155,155,155);font-weight: bold;"></div>
-                               <div style="border:red solid 0px;line-height:25px; color:rgb(128,128,128);width: 100%;height: 50%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;float: left">${i.content}</div>
-                         </div></div>`
-
-        }
-       }
-      }
-
-
-      document.getElementById("recent").innerHTML = html;
-
-     }
     function searchFocus () {
-     document.getElementById("recent").innerHTML = '';
-
+     //document.getElementById("recent").innerHTML = '';
     }
 
     function searchBlur() {
@@ -271,13 +229,14 @@
 
     async function select(chatId) {
      if (selected) {
-      document.getElementById(selected).style.backgroundColor = "rgb(251,251,251)";
+      let isSelected = document.getElementById(selected)
+      isSelected?document.getElementById(selected).style.backgroundColor = "rgb(251,251,251)":''
      }
      selected = chatId
-     document.getElementById(chatId).style.backgroundColor = "rgb(214,214,214)";
+     document.getElementById(chatId)?document.getElementById(chatId).style.backgroundColor = "rgb(238,239,239)":''
     }
 
-    async function chat(chatId, isGroupChat, name, num) {
+    async function chat(chatId, isGroupChat, name) {
      //console.log(await ChatManager.asyGetChat(user.id, chatId))
      select(chatId)
      if (selectID !== chatId) {
@@ -291,8 +250,24 @@
       document.getElementById("frame").src =encodeURI("chat.html?" + isGroupChat + "&" + id + "&" + name);
     }
 
-    async function refreshRecentList() {
-      const all = await ChatManager.asyGetAll(user.id)
+    async function refreshRecentList(item) {
+      let all = []
+      if (item) {
+       const data = document.getElementById('searchID').value
+       if(data){
+        let Record = await ChatManager.asyGetMessageSearch(user.id, data)
+        for (let i=0; i<Record.length;i++) {
+         await ChatManager.asyEnsureSingleChat(Record[i].id)
+         await ChatManager.asytopChat(user.id, Record[i].id)
+         const item = await ChatManager.asyGetChat(user.id, Record[i].id)
+         if(item)all.push(item)
+        }
+       }else if (data.length === 0){
+        all = await ChatManager.asyGetAll(user.id)
+       }
+      }else {
+        all = await ChatManager.asyGetAll(user.id)
+      }
       let html = ``
       let i = 0;
       if (all) {
@@ -396,11 +371,12 @@
 
       document.getElementById("recent").innerHTML = html;
       if (selected) {
-       select(selected);
+       select(item?firstChatId:selected);
       } else if (firstChatId) {
         select(!params[1]?firstChatId:params[1])
         document.getElementById(!params[1]?firstChatId:params[1]).click()
       }
+
     }
     ChatManager.on("msgChanged", refreshRecentList)
     refreshRecentList();

@@ -259,7 +259,7 @@
     async function refreshRecentList(item) {
       let all = []
       let html = ``
-      if (item) {
+      if (item === 1) {
        const data = document.getElementById('searchID').value
        if(data){
         let Record = await ChatManager.asyGetMessageSearch(user.id, data)

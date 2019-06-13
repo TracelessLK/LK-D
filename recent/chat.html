@@ -171,12 +171,12 @@
         }
     </script>
 </head>
-<body onkeydown="copy()" style="border:0px solid red">
+<body onkeydown="copy()" style="border:0px solid red;">
 <div ondrop="drop_handler(event);" ondragover="dragover_handler(event);"
      ondragleave="dragLeave(event)"
      style="width: 100%;height: 100%;display: flex;flex-direction: column;justify-content: flex-end;align-items: center">
-    <div class="title" style="background-color: rgb(242,242,242);">
-        <span id="title"></span><span style="color: #c0c0c0;margin: 0 10px;font-weight: 550;font-size: 0.9em"
+    <div class="title" style="background-color: rgb(242,242,243);-webkit-app-region: drag">
+        <span id="title"></span><span style="color: #c0c0c0;margin: 0 10px;font-weight: bold;font-size: 0.9em"
                                       id='count'></span>
         <i class="material-icons" style="" onclick="showDetail()">more_horiz</i>
     </div>
@@ -253,6 +253,7 @@
     const channel = lkapp.getLKWSChannel()
     const config = window.top.config
     const {contextMenu} = window.top
+    const {electron} = window.top
     const {remote} = window.top
     const {Menu, MenuItem} = remote;
     initFaces();
@@ -378,9 +379,9 @@
 
     async function getIconNameByState(state, msgId) {
         if (state === 0) {
-            return `<img src="../images/ajax-loader.gif" width="18px"height="18px"style="margin-top: 2px"/>`;
+          return `<img src="../images/ajax-loader.gif" width="18px"height="18px"style="margin-top: 2px"/>`;
         } else if (state === 1) {
-            return `<img src="../images/Arrow.png" width="18px"height="18px"style="margin-top: 2px"/>`;
+            return `<sapn style="color: tomato">重发</sapn>`;
         } else if (state === 2) {
             return isGroupChat ? await getstate(msgId) : '未读';
         } else if (state === 3) {
@@ -522,6 +523,10 @@
         }
     }
 
+    function openUrl(url){
+        window.top.shell.openExternal(url);
+    }
+
     async function _computeRecordHtml({records},leg) {
         var html = "";
         var name = user.name
@@ -563,7 +568,12 @@
                 html += "<div style='border: 0px solid red;width:11px;height:18px;background-image: url(../images/chat-y-l.png);margin-top: 31px;margin-left: -95px;'></div>";
                 html += "<div style=\"border: 0px solid red;margin-top: 20px;max-width:300px;min-height:40px;border-radius: 5px;overflow-wrap: break-word;overflow: hidden;padding: 12px 10px;background-color: #f9e160\">";
                 const {element} = _getMessage(records[i])
-                html += element;
+                if(element.length){
+                    var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g
+                    html += element.replace(reg, `<a href="#" onclick='openUrl("$1$2")'>$1$2</a>`)
+                }else{
+                    html += element
+                }
                 html += "</div>";
                 html += "</div>";
             } else {
@@ -575,7 +585,12 @@
                 html += "<div style='border:0px solid red'><div style=\"border: 0px solid red;max-width:300px;min-height:40px;border-radius: 5px;overflow-wrap: break-word;overflow: hidden;padding: 12px 10px;background-color: #ffffff\">";
 
                 const {element} = _getMessage(records[i])
-                html += element;
+                if(element.length){
+                    var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g
+                    html += element.replace(reg, `<a href="#" onclick='openUrl("$1$2")'>$1$2</a>`)
+                }else{
+                    html += element
+                }
                 html += "</div>";
                 html += `<div id='msgState' onclick="onMsgStateTouch('${records[i].id}',1)" style="color: rgb(155,155,155);font-weight: bold;border:red 0px solid;width: 70px;height: 20px;${isGroupChat || records[i].state == ChatManager.MESSAGE_STATE_SERVER_NOT_RECEIVE ? 'cursor: pointer' : ''}">${await getIconNameByState(records[i].state, records[i].id)}</div></div>`;
                 html += "<div style='width:11px;height:18px;background-image: url(../images/chat-w-r.png);margin-top: 11px'></div>";
@@ -656,16 +671,20 @@
     }
 
     function showBiggerImage() {
+        //event.target.tagName
         var widthReg = /w=[\"\'](\d+(\.\d+)?)[\"\']/ig;
         var heightReg = /h=[\"\'](\d+(\.\d+)?)[\"\']/ig;
-        if (event.target.tagName == "IMG") {
+        var winW=electron.screen.getPrimaryDisplay().workAreaSize.width;
+        var winH=electron.screen.getPrimaryDisplay().workAreaSize.height;
+        if (!event.target.oncontextmenu) {
             var w = event.target.getAttribute("w")
             var h = event.target.getAttribute('h')
-            console.log(event.target)
+            let a = w>winW?(600/w):(500/h)
             window.top.ipc.send("openImageBrowser", {
-                width: parseInt(w),
-                height: parseInt(h),
-                html: event.target.outerHTML.replace(widthReg, "width=\"" + w + "\"").replace(heightReg, "height=\"" + h + "\"")
+                width: parseInt(w>winW||h>winH?w*a:w),
+                height: parseInt(h>winH||w>winW?h*a:h),
+                src:event.target.src
+                //html: event.target.outerHTML.replace(widthReg, "width=\"" + winW + "\"").replace(heightReg, "height=\"" + winH + "\"")
             });
         }
     }

@@ -135,7 +135,7 @@
     }
     const { engine } = window.top
     const ChatManager = engine.getChatManager();
-
+    window.top.ipc.send("remoteVersion-request");
     function doVersionResponse (event, arg) {
       const curV = parseInt(window.top.remote.getGlobal("appVersion").replace(/\./ig, ""));
       const remoteV = parseInt(arg.replace(/\./ig, ""));

@@ -74,7 +74,7 @@
        } else {
         pasteImg()
        }
-      } else if (event.altKey && event.keyCode == 13) {
+      } else if (event.ctrlKey && event.keyCode == 13) {
        event.preventDefault()
        const selection = window.getSelection()
        // selection.deleteFromDocument();
@@ -104,6 +104,7 @@
        //              var r = document.body.innerHTML.match(reg);
 
        const ss = document.body.innerHTML.replace(/&nbsp;/g, '').split(imgReg)
+       console.log(ss)
        ss.forEach((p) => {
         // alert(p);
         if (p.startsWith("<img")) {

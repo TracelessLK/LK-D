@@ -19,7 +19,9 @@
 </body>
 <script>
     const { remote } = require('electron');
-
-    document.body.innerHTML = remote.getGlobal("imageHtml");
+    const src = remote.getGlobal("src");
+    const width = remote.getGlobal("width");
+    const heigth = remote.getGlobal("height");
+    document.body.innerHTML = `<img src="${src}" width="${width}" height="${heigth}"/>`
 </script>
 </html>

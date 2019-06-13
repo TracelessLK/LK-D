@@ -9,7 +9,7 @@ const rootDir = path.resolve(__dirname, '../')
 const minWidth = 780
 const minHeight = getGoldenHeight(this.minWidth)
 const config = {
-  checkUpdateUrl: 'https://raw.githubusercontent.com/TracelessLK/LK-D/publish/upgrade.json',
+  checkUpdateUrl: 'http://192.144.200.234:3000/other/upgrade.json',
   minWidth,
   minHeight,
   isDev: false, // 是否开发模式

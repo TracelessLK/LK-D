@@ -9,6 +9,7 @@
     "publish": "node build.js && electron .",
     "asars": "node bin/asars",
     "postinstall": "node bin/postinstall",
+    "upgrade": "node bin/uploadGrade",
     "install:sqlite3": "node bin/installSqlite3",
     "updateC": "git submodule update --remote submodule/LK-C && npm run build",
     "init": "git submodule init && git submodule update && npm i && npm run asars && npm run build && npm start"

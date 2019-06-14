@@ -68,12 +68,6 @@
         }
      start()
     })
-    ipc.on("refresh",(event, arg)=>{
-     if (!arg){
-      ipc.send("restart");
-     }
-
-    });
     async function start() {
       const LKApplication = engine.getApplication();
       const db = require('../store/ElecSqlite');

@@ -27,7 +27,6 @@ const { getGoldenHeight } = require('./util/Independent')
 const upgrade = require('./upgrade')
 const _ = require('lodash')
 
-
 const { minWidth, minHeight, checkUpdateTimeout } = config
 
 contextMenu({
@@ -59,7 +58,7 @@ function createWindow () {
     width: initialWidth,
     height: getGoldenHeight(initialWidth),
     minWidth,
-    minHeight,
+    minHeight
     // frame: false,
     // titleBarStyle: 'hidden',
   })
@@ -360,7 +359,8 @@ ipc.on('remoteVersion-request', (event) => {
 ipc.on('upgrade-request', (event, arg) => {
   checkUpdate((hasNew) => {
     if (arg.toIndexIFNot === false) {
-      event.sender.send('refresh', 0)
+      updateFile()
+      //event.sender.send('refresh', 0)
     }
     // if (hasNew) {
     //   mainWindow.loadURL(url.format({
@@ -437,6 +437,7 @@ function download (fileAry, events) {
     // })
     item.once('done', (event2, state) => {
       count++
+      if (state === 'completed') { count2++ }
       // if (state === 'completed') {
       //   count2++
       //   changeMsg(f, '100%')
@@ -453,20 +454,21 @@ function download (fileAry, events) {
               fs.mkdirSync(targetDir)
             }
           }
-          copyFiles(tmpDir, targetDir)
-          deleteFolder(tmpDir)
+          // copyFiles(tmpDir, targetDir)
+          // deleteFolder(tmpDir)
         }
-        const options = {
-          type: 'info',
-          title: '信息',
-          message: "检测到新版本是否升级？",
-          detail: message.join('\n\n'),
-          buttons: ['是', '否'],
-          icon: './images/traceless.png'
-        }
-        dialog.showMessageBox(options, (index) => {
-          events.sender.send('refresh', index)
-        })
+        updateFile()
+        // const options = {
+        //   type: 'info',
+        //   title: '信息',
+        //   message: "检测到新版本是否升级？",
+        //   detail: message.join('\n\n'),
+        //   buttons: ['是', '否'],
+        //   icon: path.join(__dirname, 'images/traceless.png')
+        // }
+        // dialog.showMessageBox(options, (index) => {
+        //   events.sender.send('refresh', index)
+        // })
         //mainWindow.webContents.executeJavaScript('complete()')
       }
     })
@@ -485,7 +487,28 @@ function download (fileAry, events) {
 function deleteFolder (p) {
   fse.removeSync(p)
 }
-
+function updateFile () {
+  const message = _.last(upgrade.changeList).content
+  const tmpDir = path.join(__dirname, '_tmp')
+  const targetDir = path.join(__dirname, '_tmp2')
+  const options = {
+    type: 'info',
+    title: '信息',
+    message: "检测到新版本是否升级？",
+    detail: message.join('\n\n'),
+    buttons: ['是', '否'],
+    icon: path.join(__dirname, 'images/traceless.png')
+  }
+  dialog.showMessageBox(options, (index) => {
+    if (index === 0) {
+      copyFiles(tmpDir, targetDir)
+      deleteFolder(tmpDir)
+      app.relaunch()
+      app.exit(0)
+    }
+    //events.sender.send('refresh', index)
+  })
+}
 function copyFiles (srcDir, targetDir) {
   const fileAry = fs.readdirSync(srcDir)
   fileAry.forEach((file) => {

@@ -140,7 +140,7 @@
 
     function searchBlur() {
      document.getElementById('searchID').value=''
-     //refreshRecentList()
+     refreshRecentList()
 
     }
     async function DeleteChat(chatId, isGroup) {
@@ -263,7 +263,7 @@
         for (let i=0; i<Record.length;i++) {
          const f = Record[i];
          if (f.id !== user.id) {
-          html += `<div id='${f.id}' style = "background-color: rgb(251,251,251);border:0px solid red;width:100%;height:50px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;" onclick = "chats('${f.id}','${f.name}')"><div  style = "margin-left: 10px;border:0px solid red;width:80%;height:50px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;" >`
+          html += `<div id='${f.id}' onmousedown="event.preventDefault();" style = "background-color: rgb(251,251,251);border:0px solid red;width:100%;height:50px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;" onclick = "chats('${f.id}','${f.name}')"><div  style = "margin-left: 10px;border:0px solid red;width:80%;height:50px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;" >`
           html += `<img src = ${f.pic?f.pic:'../images/1024x1024.png'}  style="width:40px;height:40px;border-radius:4px;"/>&nbsp;&nbsp;<span style="font-weight: bold;margin-top: 0px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;">${f.name}</span>`
           html += `</div></div>`
          }
@@ -335,7 +335,7 @@
             }
            }
           }
-          html += `<div id="${chatId}"`
+          html += `<div id="${chatId}" onmousedown="event.preventDefault();"`
           html += `style="border:0px red solid;border-bottom: 1px solid rgb(238,238,238);background-color:rgb(251,251,251); width:100%;height:70px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;"  onmouseover="hover('${chatId}',${i},${isGroup})" `
           html += `onmouseout="leave('${chatId}',${i},${isGroup})" oncontextmenu="remder('${chatId}','${isGroup}','${MessageCeiling}',${focus})" onclick="chat('${chatId}','${isGroup?re.name:person.name}','${isGroup}')">  `
           html += `<div id='${i}'onmouseover="hovers('${chatId}',${i}) " onmouseout="leaves('${chatId}',${i})" onclick="DeleteChat('${chatId}','${isGroup}')"  style="border:red 0px solid;margin-left: -5px;visibility: hidden;color:rgb(188,188,188);width:6%;text-align: center;font-weight: bold;font-family: "Abadi MT Condensed Light"" ></div>`

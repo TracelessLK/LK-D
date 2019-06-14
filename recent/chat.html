@@ -676,7 +676,7 @@
         var heightReg = /h=[\"\'](\d+(\.\d+)?)[\"\']/ig;
         var winW=electron.screen.getPrimaryDisplay().workAreaSize.width;
         var winH=electron.screen.getPrimaryDisplay().workAreaSize.height;
-        if (!event.target.oncontextmenu) {
+        if (!event.target.oncontextmenu&&event.target.tagName==="IMG") {
             var w = event.target.getAttribute("w")
             var h = event.target.getAttribute('h')
             let a = w>winW?(600/w):(500/h)

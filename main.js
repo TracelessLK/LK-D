@@ -449,26 +449,14 @@ function download (fileAry, events) {
           let targetDir = __dirname
           if (isDev()) {
             targetDir = path.join(__dirname, '_tmp2')
-
             if (!fs.existsSync(targetDir)) {
               fs.mkdirSync(targetDir)
             }
           }
           // copyFiles(tmpDir, targetDir)
           // deleteFolder(tmpDir)
+          updateFile()
         }
-        updateFile()
-        // const options = {
-        //   type: 'info',
-        //   title: '信息',
-        //   message: "检测到新版本是否升级？",
-        //   detail: message.join('\n\n'),
-        //   buttons: ['是', '否'],
-        //   icon: path.join(__dirname, 'images/traceless.png')
-        // }
-        // dialog.showMessageBox(options, (index) => {
-        //   events.sender.send('refresh', index)
-        // })
         //mainWindow.webContents.executeJavaScript('complete()')
       }
     })
@@ -489,8 +477,14 @@ function deleteFolder (p) {
 }
 function updateFile () {
   const message = _.last(upgrade.changeList).content
-  const tmpDir = path.join(__dirname, '_tmp')
-  const targetDir = path.join(__dirname, '_tmp2')
+  let targetDir = __dirname
+  const tmp = path.join(__dirname, '_tmp')
+  if (isDev()) {
+    targetDir = path.join(__dirname, '_tmp2')
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir)
+    }
+  }
   const options = {
     type: 'info',
     title: '信息',
@@ -501,12 +495,11 @@ function updateFile () {
   }
   dialog.showMessageBox(options, (index) => {
     if (index === 0) {
-      copyFiles(tmpDir, targetDir)
-      deleteFolder(tmpDir)
+      copyFiles(tmp, targetDir)
+      deleteFolder(tmp)
       app.relaunch()
       app.exit(0)
     }
-    //events.sender.send('refresh', index)
   })
 }
 function copyFiles (srcDir, targetDir) {

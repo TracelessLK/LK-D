@@ -1,6 +1,4 @@
-//const { CliUtil } = require('@ys/collection')
 
-//const { execSync } = CliUtil
 const fse = require('fs-extra')
 const path = require('path')
 

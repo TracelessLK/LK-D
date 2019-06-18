@@ -9,13 +9,14 @@ module.exports = {
   "parser": "babel-eslint",
   "plugins": [
     "flowtype",
-    "jest"
-  ],
+    "jest",
+],
   "extends": [
     "eslint:recommended",
     "standard",
-    "airbnb"
-  ],
+    "airbnb",
+    "react-app"
+],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
@@ -24,6 +25,7 @@ module.exports = {
     }
   },
   "rules": {
+    'arrow-parens': 0,
     'no-shadow':0,
     'func-names':0,
     'no-undef':0,

@@ -259,7 +259,6 @@
       let html = ``
       if (item === 1) {
        const data = document.getElementById('searchID').value
-       console.log(data.length)
        if(data){
         let Record = await ChatManager.asyGetMessageSearch(user.id, data)
         for (let i=0; i<Record.length;i++) {
@@ -384,7 +383,7 @@
 
       document.getElementById("recent").innerHTML = html;
       if (selected) {
-       select(item?firstChatId:selected);
+       select(selected);
       } else if (firstChatId) {
         select(!params[1]?firstChatId:params[1])
         document.getElementById(!params[1]?firstChatId:params[1]).click()

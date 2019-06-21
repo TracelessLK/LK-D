@@ -12,7 +12,7 @@
     "upgrade": "node bin/uploadGrade",
     "install:sqlite3": "node bin/installSqlite3",
     "updateC": "git submodule update --remote submodule/LK-C && npm run build",
-    "init": "git submodule init && git submodule update && npm i && npm run asars && npm run build && npm start"
+    "init": "git submodule init && git submodule update --remote && npm i && npm run asars && npm run build && npm start"
   },
   "devDependencies": {
     "@ys/eslint-config-strict": "github:spirit1453/codebase#strict_eslint",

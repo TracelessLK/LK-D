@@ -104,7 +104,6 @@
        //              var r = document.body.innerHTML.match(reg);
 
        const ss = document.body.innerHTML.replace(/&nbsp;/g, '').split(imgReg)
-       console.log(ss)
        ss.forEach((p) => {
         // alert(p);
         if (p.startsWith("<img")) {

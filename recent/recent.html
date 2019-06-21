@@ -150,42 +150,44 @@
       }
     }
     async function remder (chatId, isGroupChat, MessageCeiling,focus) {
+     if (event.button === 2) {
       const menu = new Menu()
       const Message =  MessageCeiling
-     menu.append(new MenuItem({
-      label:Message!=="null"?'取消置顶':'🔝置顶',
-      async click() {
-       if (Message!=="null") {
-        await ChatManager.asyMessageCeiling(null,user.id, chatId)
-       }else {
-        await ChatManager.asyMessageCeiling(Date.now(),user.id, chatId)
-       }
-       refreshRecentList()
-      },
-     }))
-     menu.append(new MenuItem({type: 'separator'}))
-     menu.append(new MenuItem({
-      label:focus!==1?'⭐特别提醒':'取消特别提醒',
-      async click() {
-       if (focus===1) {
-        await ChatManager.asyMessageFocus(null,user.id, chatId)
-       }else {
-        await ChatManager.asyMessageFocus(1,user.id, chatId)
-       }
-       refreshRecentList()
-      },
-     }))
-     menu.append(new MenuItem({type: 'separator'}))
-     menu.append(new MenuItem({
-        label: '删除',
-        async click() {
-          await ChatManager.asyDeleteChat(user.id, chatId)
-         //refreshRecentList()
-         location.reload()
-        },
-        visible: isGroupChat !== '1'
+      menu.append(new MenuItem({
+       label:Message!=="null"?'取消置顶':'🔝置顶',
+       async click() {
+        if (Message!=="null") {
+         await ChatManager.asyMessageCeiling(null,user.id, chatId)
+        }else {
+         await ChatManager.asyMessageCeiling(Date.now(),user.id, chatId)
+        }
+        refreshRecentList()
+       },
+      }))
+      menu.append(new MenuItem({type: 'separator'}))
+      menu.append(new MenuItem({
+       label:focus!==1?'⭐特别提醒':'取消特别提醒',
+       async click() {
+        if (focus===1) {
+         await ChatManager.asyMessageFocus(null,user.id, chatId)
+        }else {
+         await ChatManager.asyMessageFocus(1,user.id, chatId)
+        }
+        refreshRecentList()
+       },
+      }))
+      menu.append(new MenuItem({type: 'separator'}))
+      menu.append(new MenuItem({
+       label: '删除',
+       async click() {
+        await ChatManager.asyDeleteChat(user.id, chatId)
+        //refreshRecentList()
+        location.reload()
+       },
+       visible: isGroupChat !== '1'
       }))
       menu.popup({ window: remote.getCurrentWindow() })
+     }
     }
 
     async function MsgsOne(chatId) {
@@ -223,7 +225,6 @@
         // document.getElementById(chatId).style.backgroundColor = "rgb(251,251,251)";
       }
     }
-
     async function select(chatId) {
      if (selected) {
       let isSelected = document.getElementById(selected)
@@ -258,6 +259,7 @@
       let html = ``
       if (item === 1) {
        const data = document.getElementById('searchID').value
+       console.log(data.length)
        if(data){
         let Record = await ChatManager.asyGetMessageSearch(user.id, data)
         for (let i=0; i<Record.length;i++) {
@@ -273,7 +275,7 @@
          // if(item)all.push(item)
         }
        }else if (data.length === 0){
-        all = await ChatManager.asyGetAll(user.id)
+        refreshRecentList()
        }
       }else {
         all = await ChatManager.asyGetAll(user.id)
@@ -337,7 +339,7 @@
           }
           html += `<div id="${chatId}" onmousedown="event.preventDefault();"`
           html += `style="border:0px red solid;border-bottom: 1px solid rgb(238,238,238);background-color:rgb(251,251,251); width:100%;height:70px;cursor: pointer;padding-left: 5px;display:flex;flex-direction:row;justify-content: flex-start;align-items: center;"  onmouseover="hover('${chatId}',${i},${isGroup})" `
-          html += `onmouseout="leave('${chatId}',${i},${isGroup})" oncontextmenu="remder('${chatId}','${isGroup}','${MessageCeiling}',${focus})" onclick="chat('${chatId}','${isGroup?re.name:person.name}','${isGroup}')">  `
+          html += `onmouseout="leave('${chatId}',${i},${isGroup})" oncontextmenu="event.preventDefault();" onmouseup="remder('${chatId}','${isGroup}','${MessageCeiling}',${focus})" onclick="chat('${chatId}','${isGroup?re.name:person.name}','${isGroup}')">  `
           html += `<div id='${i}'onmouseover="hovers('${chatId}',${i}) " onmouseout="leaves('${chatId}',${i})" onclick="DeleteChat('${chatId}','${isGroup}')"  style="border:red 0px solid;margin-left: -5px;visibility: hidden;color:rgb(188,188,188);width:6%;text-align: center;font-weight: bold;font-family: "Abadi MT Condensed Light"" ></div>`
           const newMsgNum = await ChatManager.asyGetNewMsgNum(chatId)
           const draft = `<sapn style="color: red">[草稿] </sapn>${reserve1?(reserve1.indexOf('<img width=')!==-1?'[图片]':reserve1):''}`

@@ -227,6 +227,7 @@ function openCaptureBrowser () {
   // captureBrowser.setFullScreen(true)
 }
 
+
 ipc.on('openCaptureBrowser', () => {
   openCaptureBrowser()
 })
@@ -377,6 +378,7 @@ ipc.on('upgrade-request', (event, arg) => {
     // }
   })
 })
+
 const upgradeMessages = new Map()
 
 ipc.on('start-download', (event) => {
@@ -455,6 +457,7 @@ function download (fileAry, events) {
           }
           // copyFiles(tmpDir, targetDir)
           // deleteFolder(tmpDir)
+          mainWindow.webContents.send('remoteVersion-response', latestVersion || packageJSON.version)
           updateFile()
         }
         //mainWindow.webContents.executeJavaScript('complete()')

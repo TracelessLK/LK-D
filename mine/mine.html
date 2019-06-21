@@ -109,15 +109,18 @@
     function doVersionResponse (event, arg) {
       const curV = parseInt(window.top.remote.getGlobal("appVersion").replace(/\./ig, ""));
       const remoteV = parseInt(arg.replace(/\./ig, ""));
-      console.log(1)
       if (curV < remoteV) {
         document.getElementById("upgrade-btn").disabled = false;
         document.getElementById("upgrade-tip").innerText = arg;
       }
     }
+    const dis = parent.window.document.getElementById("newVersionTip").style.display
+    if (!dis) {
+     window.top.ipc.send("remoteVersion-request");
+    }
     window.top.ipc.on("remoteVersion-response", doVersionResponse);
 
-    window.top.ipc.send("remoteVersion-request");
+
     window.addEventListener("beforeunload", (event) => {
     window.top.ipc.removeListener("remoteVersion-response", doVersionResponse);
 });

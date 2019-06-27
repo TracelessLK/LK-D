@@ -57,7 +57,7 @@
 </body>
 <script>
     const { engine } = window.top
-    const ChatManager = engine.get('ChatManager')
+    const ChatManager = engine.ChatManager
     const ipc = require('electron').ipcRenderer;
     //start()
     //ipc.send("start-download");
@@ -69,13 +69,13 @@
      start()
     })
     async function start() {
-      const LKApplication = engine.getApplication();
+      const LKApplication = engine.Application;
       const db = require('../store/ElecSqlite');
       // 等待数据库初始化完毕
       await LKApplication.getCurrentApp().start(db, LKApplication.PLATFORM_ELECTRON);
 
       let userId
-      engine.getUserManager().asyGetAll().then(async (users) => {
+      engine.UserManager.asyGetAll().then(async (users) => {
         if (users && users.length > 0) {
           const cur = users[0];
           userId = cur.id
@@ -122,8 +122,8 @@
           ipc.send("messageRead", { total: num });
         })
       }
-      engine.getChatManager().on("msgReceived", notifyNewMsg);
-      engine.getChatManager().on("msgRead", notifyReadMsg);
+      engine.ChatManager.on("msgReceived", notifyNewMsg);
+      engine.ChatManager.on("msgRead", notifyReadMsg);
 
       // const checkVersion = function () {
       //   window.top.ipc.send("upgrade-request", { toIndexIFNot: false });

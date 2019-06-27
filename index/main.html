@@ -127,14 +127,14 @@
   </body>
 <script>
     document.body.className = window.top.theme;
-    const user = window.top.engine.getApplication().getCurrentApp().getCurrentUser();
+    const user = window.top.engine.Application.getCurrentApp().getCurrentUser();
     if (user.pic === null) {
       document.getElementById("userimg").src = '../images/1024x1024.png'
     } else {
       document.getElementById("userimg").src = user.pic
     }
     const { engine } = window.top
-    const ChatManager = engine.getChatManager();
+    const ChatManager = engine.ChatManager;
     //window.top.ipc.send("remoteVersion-request");
     function doVersionResponse (event, arg) {
       const curV = parseInt(window.top.remote.getGlobal("appVersion").replace(/\./ig, ""));

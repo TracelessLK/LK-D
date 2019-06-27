@@ -118,13 +118,13 @@
 <script>
     document.body.className = window.top.theme;
     const { engine } = window.top
-    const lkapp = engine.getApplication().getCurrentApp()
+    const lkapp = engine.Application.getCurrentApp()
     lkapp.on('netStateChanged', (online) => {
       document.getElementById('offlineWarning').style.display = online ? 'none' : 'flex'
     })
     const user = lkapp.getCurrentUser()
-    const ChatManager = engine.get('ChatManager')
-    const ContactManager = engine.get('ContactManager')
+    const ChatManager = engine.ChatManager
+    const ContactManager = engine.ContactManager
     var ps = document.location.href.substring(document.location.href.indexOf("?") + 1);
     var params = ps.split("&")
     let selected = "";

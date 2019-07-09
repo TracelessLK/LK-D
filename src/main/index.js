@@ -1,7 +1,7 @@
 const electron = require('electron')
 const path = require('path')
 
-const { app, BrowserWindow } = electron
+const { app, BrowserWindow, globalShortcut } = electron
 const CommonUtil = require('../util/Common')
 
 const rootDir = path.resolve(__dirname, '../..')
@@ -16,9 +16,14 @@ function createWindow () {
   })
   if (CommonUtil.isDev) {
     win.loadURL('http://localhost:3000')
-    win.webContents.openDevTools()
+    win.webContents.openDevTools({
+      mode: 'bottom'
+    })
     process.on('unhandledRejection', err => {
       throw err;
+    })
+    globalShortcut.register('CommandOrControl+D', () => {
+      win.webContents.toggleDevTools()
     })
   } else {
     win.loadFile(path.resolve(rootDir, 'build/index.html'))

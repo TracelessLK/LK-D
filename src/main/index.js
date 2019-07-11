@@ -7,7 +7,7 @@ const CommonUtil = require('../util/Common')
 const rootDir = path.resolve(__dirname, '../..')
 
 function createWindow () {
-  let win = new BrowserWindow({
+  const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -20,17 +20,17 @@ function createWindow () {
       mode: 'bottom'
     })
     process.on('unhandledRejection', err => {
-      throw err;
+      throw err
     })
     globalShortcut.register('CommandOrControl+D', () => {
       win.webContents.toggleDevTools()
     })
   } else {
     win.loadFile(path.resolve(rootDir, 'build/index.html'))
-    process.on('unhandledRejection', err => {
+    process.on('unhandledRejection', () => {
       //todo: log error and report
-    });
-    process.on('uncaughtException', err=>{
+    })
+    process.on('uncaughtException', () => {
       //todo: log error and report
     })
   }

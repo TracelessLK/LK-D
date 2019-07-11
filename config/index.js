@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 // const _ = require('lodash')
-
+/* eslint-disable */
 const { getGoldenHeight } = require('../util/Independent')
 
 const rootDir = path.resolve(__dirname, '../')

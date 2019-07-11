@@ -5,4 +5,6 @@ main.bundle.js
 index.bundle.js
 faces.js
 src/render/serviceWorker.js
+submodule/LK-C/common/util/lz-base64-string.js
+
 

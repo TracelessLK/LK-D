@@ -11,7 +11,7 @@ function App() {
           Edit
           {' '}
           <code>src/App.js</code>
-          {' '}
+          {'a '}
 and save to reload.
         </p>
         <a

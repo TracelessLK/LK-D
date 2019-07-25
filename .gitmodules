@@ -1,7 +1,0 @@
-[submodule "submodule/LK-C"]
-	path = submodule/LK-C
-	url = https://github.com/TracelessLK/LK-C.git
-	branch = dev
-[submodule "submodule/eslint-config-lk"]
-	path = submodule/eslint-config
-	url = https://github.com/TracelessLK/eslint-config-lk.git

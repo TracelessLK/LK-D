@@ -1,0 +1,152 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family:sans-serif;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left .content {
+  flex-direction: row-reverse;
+}
+
+.bottom .content {
+  flex-direction: column;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+}
+
+.left .main {
+  height: 100%;
+}
+
+.bottom .main {
+  width: 100%;
+}
+
+.navigator {
+  background-color: #535353;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.left .navigator {
+  height: 100%;
+  width: 70px;
+  flex-direction: column;
+}
+
+.bottom .navigator {
+  width: 100%;
+  height: 100px;
+  flex-direction: row;
+}
+
+.left #turn-bottom-theme {
+  display: block;
+}
+
+.left #turn-left-theme {
+  display: none;
+}
+
+.bottom #turn-left-theme {
+  display: block;
+}
+
+.bottom #turn-bottom-theme {
+  display: none;
+}
+
+.message_img {
+  width: 40px;
+  height: 80px;
+  text-align: center;
+  line-height: 80px;
+  margin-top: 56px;
+}
+
+.message_L0 {
+  display: none;
+  position: absolute;
+  left: 30px;
+  top: 0;
+  font-size: 9pt;
+  border: 1px solid red;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: red;
+}
+
+.message_L1 {
+  width: 40px;
+  height: 40px;
+  border-radius: 2px;
+}
+
+.message_body {
+  width: 40px;
+  height: 80px;
+  text-align: center;
+  line-height: 80px;
+  position: relative;
+}
+
+.message_body_L0 {
+  display: none;
+  position: absolute;
+  left: 30px;
+  color: rgb(255, 254, 254);
+  font-size: 9pt;
+  border: 1px solid red;
+  min-width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 17px;
+  border-radius: 10px;
+  background-color: rgb(241, 56, 56);
+  font-weight: bold;
+}
+
+.message_body_L1 {
+  color: #f9e160;
+  font-size: 32px;
+  cursor: pointer;
+  position: relative;
+}
+
+.message_body_L2 {
+  display: none;
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  font-size: 9pt;
+  border: 1px solid red;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: red;
+}

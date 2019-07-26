@@ -1,0 +1,216 @@
+.recent_message {
+  height: 100%;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+  background-color: #e0e0e0;
+  border-right: 1px solid rgb(238, 238, 238);
+  border-bottom: 1px solid rgb(238, 238, 238);
+  height: 45px;
+  line-height: 45px;
+  font-size: 12pt;
+  font-weight: 400;
+}
+
+.left .title {
+  background-color: #e0e0e0;
+  border-right: 1px solid rgb(238, 238, 238);
+  border-bottom: 1px solid rgb(238, 238, 238);
+  height: 45px;
+  line-height: 45px;
+  font-size: 12pt;
+  font-weight: 400;
+}
+
+.bottom .title {
+  background-color: #636363;
+  border-right: 1px solid #535353;
+  color: white;
+}
+
+.title i {
+  font-size: 20px;
+  float: right;
+  cursor: pointer;
+}
+
+.bottom .title i {
+  color: #f0f0f0;
+  margin-top: 6px;
+  margin-right: 10px;
+}
+
+.left .title i {
+  margin-top: 14px;
+  margin-right: 10px;
+}
+
+input[type=search] {
+  width: 100%;
+  height: 25px;
+  background-color: rgb(230, 230, 230);
+  background-image: url(../images/sou.png);
+  background-repeat: no-repeat;
+  background-size: 13px;
+  background-position: 8px center;
+  float: left;
+  padding: 0 0 0 25px;
+  border-radius: 5px;
+  border: 0 gray solid;
+  font-size: 12px;
+  padding-right: 5px
+}
+
+input:focus {
+  outline: none;
+
+  /* outline:3px solid gray; */
+  box-shadow: 0 0 0 2px gray;
+}
+
+.search {
+  margin: 10px 10px 10px 14px;
+}
+
+.Warning {
+  width: 250px;
+  height: 35px;
+  cursor: pointer;
+  padding-left: 30px;
+  display: none;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: rgb(246, 216, 178);
+}
+
+.Warning_L0 {
+  color: #966D3F;
+  width: 50%;
+  font-weight: bold;
+  border: red solid 0;
+  margin-top: 10px;
+  float: left;
+  font-size: 12px
+}
+
+.Warning_L1 {
+  margin-top: 10px;
+  border: red solid 0;
+  float: left;
+  margin-left: 30px
+}
+
+.recent_L0 {
+  width: 250px;
+  flex: 1;
+  overflow: auto;
+  border-right: 1px solid rgb(229, 229, 229);
+}
+
+.recent_chat {
+  flex: 1;
+  height: 100%;
+  display: flex
+}
+
+.recent_L1 {
+  border: 0 red solid;
+  border-bottom: 1px solid rgb(238, 238, 238);
+  background-color: rgb(251, 251, 251);
+  width: 100%;
+  height: 70px;
+  cursor: pointer;
+  padding-left: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.recent_L2 {
+  border: red 0 solid;
+  margin-left: -5px;
+  visibility: hidden;
+  color: rgb(188, 188, 188);
+  width: 6%;
+  text-align: center;
+  font-weight: bold;
+  font-family: "Abadi MT Condensed Light";
+}
+
+.recent_L3 {
+  width: 17%;
+  height: 60%;
+  border-radius: 3px;
+}
+
+.react_L4 {
+  border: red solid 0;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 72%;
+  height: 60%;
+  margin-left: 0;
+  margin-top: 0;
+  float: left
+}
+
+.react_L5 {
+  border: red solid 0;
+  width: 50%;
+  line-height: 17px;
+  height: 50%;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  float: left
+}
+
+.react_L6 {
+  border: red solid 0;
+  width: 50%;
+  height: 50%;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  float: left;
+  text-align: right;
+  color: rgb(155, 155, 155);
+  font-weight: bold;
+}
+
+.react_L7 {
+  border: red solid 0;
+  line-height: 25px;
+  color: rgb(128, 128, 128);
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  float: left
+}
+
+.react_L8 {
+  border: 0 red solid;
+  float: left;
+  width: 4%;
+  height: 15%;
+  margin-top: -23%;
+  margin-left: 0%;
+  transform: rotate(180deg);
+  visibility: visible
+}
+

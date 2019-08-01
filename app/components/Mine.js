@@ -6,7 +6,7 @@ import styles from './Home.css';
 
 type Props = {};
 
-export default class Home extends Component<Props> {
+export default class Mine extends Component<Props> {
   props: Props;
 
   render() {

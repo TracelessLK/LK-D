@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import style from './css/recent.css'
 import admin from "./images/pan.jpg"
 import sjx from "./images/sjx.png"
+
 class RecentList extends Component {
   constructor(props){
     super(props)

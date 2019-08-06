@@ -7,7 +7,8 @@ import HomePage from './containers/HomePage';
 import CounterPage from './components/Counter';
 import Index from './components/index';
 import Mine from './components/Mine';
-
+import Register from './components/Register';
+import Main from './components/Main';
 export default () => (
   <App>
     <Switch>

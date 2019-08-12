@@ -1,14 +1,14 @@
 
 import React, { Component } from 'react'
 import RecentView from "./RecentView";
-import Chat from './Chat'
+import ChatView from './ChatView'
 import admin from './images/pan.jpg'
 import { Link } from "react-router-dom"
 import routes from "../constants/routes"
 import style from'./css/recent.css'
 import wifi from "./images/Wifi-Error.png"
 document.body.className = "left";
-class Contact extends React.Component {
+class ContactView extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -61,4 +61,4 @@ class Contact extends React.Component {
   }
 }
 
-export default Contact
+export default ContactView

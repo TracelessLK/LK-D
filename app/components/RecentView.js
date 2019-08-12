@@ -3,6 +3,7 @@ import style from './css/recent.css'
 import wifi from './images/Wifi-Error.png'
 import RecentItem from './RecentItem'
 import defaultAvatar from "./images/1024x1024.png"
+import ChatView from './ChatView'
 
 const { engine } = require('@lk/LK-C')
 const Application = engine.Application

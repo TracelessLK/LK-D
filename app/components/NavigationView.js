@@ -1,29 +1,19 @@
 
 import React, { Component } from 'react'
 import RecentView from "./RecentView";
-import Chat from './Chat'
-import admin from './images/pan.jpg'
-
-
-
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch
-} from 'react-router-dom';
-
-import Contact from "./Contact"
-
-import routes from "../constants/routes"
+import ChatView from './ChatView'
+import headPortrait from './images/1024x1024.png'
+const { engine } = require('@lk/LK-C')
+const Application = engine.Application
+const lkApp = Application.getCurrentApp()
 document.body.className = "left";
-class Main extends React.Component {
+class NavigationView extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       selected:'recent'
     }
-    //this.selectNavigator = this.selectNavigator.bind(this)
+    this.user = lkApp.getCurrentUser()
   }
   selectNavigator (name) {
     if (this.state.selected) {
@@ -35,13 +25,13 @@ class Main extends React.Component {
       <div className="content">
         <div className='main'>
           <RecentView/>
-          <Chat/>
+          <ChatView/>
         </div>
         <div className='navigator'>
           <div className="message_img">
             <div className='message_L0'>
             </div>
-            <img src={admin} id ='userimg'  className="message_L1"/>&nbsp;
+            <img src={this.user.pic ? this.user.pic : headPortrait} id ='userimg'  className="message_L1"/>&nbsp;
           </div>
           <div className='message_body'>
             <div className='message_body_L0'/>
@@ -64,4 +54,4 @@ class Main extends React.Component {
   }
 }
 
-export default Main
+export default NavigationView

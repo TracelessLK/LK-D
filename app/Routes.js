@@ -6,17 +6,13 @@ import App from './containers/App';
 import HomePage from './containers/HomePage';
 import CounterPage from './components/Counter';
 import Index from './components/index';
-import Mine from './components/Mine';
-import Register from './components/Register';
-import Main from './components/Main';
+import RegisterView from './components/RegisterView';
+import NavigationView from './components/NavigationView';
 export default () => (
   <App>
     <Switch>
       <Route exact path={routes.COUNTER} component={CounterPage} />
-      <Route path={routes.HOME} component={Index}>
-
-      </Route>
-      <Route path='/mine' component={Mine} />
+      <Route path={routes.HOME} component={Index}/>
     </Switch>
   </App>
 );

@@ -1,10 +1,9 @@
 
 import React, { Component } from 'react'
 import RecentView from "./RecentView";
-import Register from './Register'
-import Main from './Main'
+import RegisterView from './RegisterView'
+import NavigationView from './NavigationView'
 const { engine } = require('@lk/LK-C')
-const Application = engine.Application
 const db = require('../../store/ElecSqlite');
 const LKApplication = engine.Application;
 
@@ -23,10 +22,8 @@ class Index extends React.Component {
     this.start()
   }
   start = async () => {
-    await LKApplication.getCurrentApp()
-      .start(db, LKApplication.PLATFORM_ELECTRON)
-    engine.UserManager.asyGetAll()
-      .then(async (users) => {
+    await LKApplication.getCurrentApp().start(db, LKApplication.PLATFORM_ELECTRON)
+    engine.UserManager.asyGetAll().then(async (users) => {
         if (users && users.length > 0) {
           const cur = users[0];
           this.userId = cur.id
@@ -37,11 +34,11 @@ class Index extends React.Component {
             console.log({ err })
           }
           this.setState({
-            content: <Main/>
+            content: <NavigationView/>
           })
         } else {
           this.setState({
-            content: <Register/>
+            content: <RegisterView/>
           })
         }
       })

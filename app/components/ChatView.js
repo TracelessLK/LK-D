@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import style from './css/chat.css'
 import admin from "./images/pan.jpg"
-class Chat extends Component {
+class ChatView extends Component {
 
   render() {
     return (
@@ -53,4 +53,4 @@ class Chat extends Component {
   }
 }
 
-export default Chat
+export default ChatView

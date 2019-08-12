@@ -11,7 +11,7 @@ const RSAKey = require('react-native-rsa')
 const LKApplication = engine.Application;
 const db = require('../../store/ElecSqlite');
 
-export default class Register extends Component<Props> {
+export default class RegisterView extends Component<Props> {
   constructor(props) {
     super(props)
     this.state = {

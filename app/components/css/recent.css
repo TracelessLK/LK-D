@@ -124,7 +124,7 @@ input:focus {
 .recent_L1 {
   border: 0 red solid;
   border-bottom: 1px solid rgb(238, 238, 238);
-  background-color: rgb(251, 251, 251);
+  /*background-color: rgb(251, 251, 251);*/
   width: 100%;
   height: 70px;
   cursor: pointer;
@@ -239,4 +239,8 @@ input:focus {
 }
 .imghtml_L3{
   margin:0;padding:0;float:left;height: 50%;
+}
+.newMsgNum {
+  color:rgb(255,254,254);font-size: 9pt;border:1px solid red;min-width:16px;height:16px;text-align: center;align-items: center;border-radius: 100px;background-color: rgb(241,56,56);margin-left: -83%;margin-bottom: 67px;font-weight: bold;
+  position: absolute;
 }

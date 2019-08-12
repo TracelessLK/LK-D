@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import Recent from "./Recent";
+import RecentView from "./RecentView";
 import Chat from './Chat'
 import admin from './images/pan.jpg'
 import { Link } from "react-router-dom"

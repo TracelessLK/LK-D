@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import Recent from "./Recent";
+import RecentView from "./RecentView";
 import Register from './Register'
 import Main from './Main'
 const { engine } = require('@lk/LK-C')

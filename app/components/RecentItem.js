@@ -58,6 +58,9 @@ class RecentItem extends Component {
   }
   componentDidMount() {
     chatManager.on('chatChange', this.chatChangeListener)
+    if ('33b947c5-9ede-4620-8136-b2c0eaf1d0d9'=== this.props.id) {
+      this.chatSelect()
+    }
   }
   chatChangeListener = async({param})=> {
 

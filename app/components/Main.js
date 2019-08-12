@@ -3,8 +3,7 @@ import React, { Component } from 'react'
 import RecentView from "./RecentView";
 import Chat from './Chat'
 import admin from './images/pan.jpg'
-import Home from './Home'
-import Counter from './Counter'
+
 
 
 import {

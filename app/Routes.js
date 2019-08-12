@@ -11,8 +11,10 @@ import NavigationView from './components/NavigationView';
 export default () => (
   <App>
     <Switch>
-      <Route exact path={routes.COUNTER} component={CounterPage} />
-      <Route path={routes.HOME} component={Index}/>
+      <Route path='/counter' component={CounterPage} />
+      <Route path={routes.HOME} component={Index}>
+
+      </Route>
     </Switch>
   </App>
 );

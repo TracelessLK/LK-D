@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import RecentView from "./RecentView";
 import ChatView from './ChatView'
 import headPortrait from './images/1024x1024.png'
+import { Link } from 'react-router-dom';
 const { engine } = require('@lk/LK-C')
 const Application = engine.Application
 const lkApp = Application.getCurrentApp()
@@ -45,7 +46,7 @@ class NavigationView extends React.Component {
           <div style={{width:'50px'}}/>
           <div className='message_body'>
             <div className='message_body_L2'/>
-            <i id="recent" className="material-icons message_body_L1"onClick={(name)=> this.selectNavigator('mine')}>person_outline</i>
+            <i id="recent" className="material-icons message_body_L1"onClick={(name)=> this.selectNavigator('mine')}> <Link to='/counter' replace>person_outline</Link></i>
           </div>
           <div style={{flex:1}}/>
         </div>

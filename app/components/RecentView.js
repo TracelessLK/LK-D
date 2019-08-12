@@ -38,7 +38,7 @@ export default class RecentView extends Component {
   recentMessage = async () => {
     const user = lkApp.getCurrentUser()
     const chatAry = await chatManager.getAllChat(user.id)
-    console.log({chatAry})
+    const chatTop = chatAry[0].id
     let chatList = chatAry.map((item,index)=>{
       const {MessageCeiling, activeTime, avatar, chatName, focus, id, isGroup, memberCount, msgContent, newMsgNum, ownerUserId, reserve1, senderUid, state} = item
       const imgMapObj = []
@@ -70,6 +70,7 @@ export default class RecentView extends Component {
         reserve1,
         senderUid,
         state,
+        chatTop,
         index
 
       }
@@ -80,7 +81,7 @@ export default class RecentView extends Component {
     })
   }
   parentChatSelect = (chatId)=> {
-   console.log(this.select,chatId)
+   //console.log(this.select,chatId)
     this.select=chatId
   }
   chatTime = (activeTime)=> {

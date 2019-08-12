@@ -211,7 +211,6 @@ input:focus {
   margin-top: -23%;
   margin-left: 0%;
   transform: rotate(180deg);
-  visibility: visible
 }
 .mail{
   width:250px;flex:1;overflow: auto;border-right: 1px solid #d0d0d0;
@@ -241,6 +240,5 @@ input:focus {
   margin:0;padding:0;float:left;height: 50%;
 }
 .newMsgNum {
-  color:rgb(255,254,254);font-size: 9pt;border:1px solid red;min-width:16px;height:16px;text-align: center;align-items: center;border-radius: 100px;background-color: rgb(241,56,56);margin-left: -83%;margin-bottom: 67px;font-weight: bold;
-  position: absolute;
+  color:rgb(255,254,254);font-size: 9pt;border:1px solid red;min-width:16px;height:16px;text-align: center;align-items: center;border-radius: 100px;background-color: rgb(241,56,56);margin-left: -83%;margin-top:12%;margin-bottom: 67px;font-weight: bold;
 }

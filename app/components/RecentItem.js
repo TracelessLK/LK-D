@@ -58,7 +58,7 @@ class RecentItem extends Component {
   }
   componentDidMount() {
     chatManager.on('chatChange', this.chatChangeListener)
-    if ('33b947c5-9ede-4620-8136-b2c0eaf1d0d9'=== this.props.id) {
+    if (this.props.chatTop=== this.props.id) {
       this.chatSelect()
     }
   }
@@ -110,7 +110,7 @@ class RecentItem extends Component {
           <div className={style.react_L6}>{activeTime}</div>
           <div className={style.react_L7}>{msgContent}</div>
         </div>
-        {MessageCeiling ? <img src={sjx} className={style.react_L8}/> : ''}
+        <img src={sjx} style={{visibility: MessageCeiling?'visible':'hidden'}} className={style.react_L8}/>
         {isNewMsgNum}
       </div>
     )

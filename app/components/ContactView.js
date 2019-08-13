@@ -14,6 +14,7 @@ class ContactView extends React.Component {
     this.state = {
       selected:'recent'
     }
+    console.log(this.props)
     //this.selectNavigator = this.selectNavigator.bind(this)
   }
   selectNavigator (name) {
@@ -21,23 +22,23 @@ class ContactView extends React.Component {
 
     }
   }
-  s() {
-    ` <div className={style.recent_message}>
-        <div className={style.title} style={{backgroundColor: 'rgb(251,251,251)'}}>
-          <div >
-            通讯录
-          </div>
-          <div className={style.mail}>
-            <div className={style.mail_L1}>
-              <div className={style.mail_L2}>
-                <img src={admin} className={style.mail_img}/>&nbsp;&nbsp;
-                <span className={style.mail_span}>panyu</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`
-  }
+  // s() {
+  //   ` <div className={style.recent_message}>
+  //       <div className={style.title} style={{backgroundColor: 'rgb(251,251,251)'}}>
+  //         <div >
+  //           通讯录
+  //         </div>
+  //         <div className={style.mail}>
+  //           <div className={style.mail_L1}>
+  //             <div className={style.mail_L2}>
+  //               <img src={admin} className={style.mail_img}/>&nbsp;&nbsp;
+  //               <span className={style.mail_span}>panyu</span>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>`
+  // }
   render() {
     return (
       <div className={style.recent_message}>

@@ -4,21 +4,20 @@ import wifi from './images/Wifi-Error.png'
 import RecentItem from './RecentItem'
 import defaultAvatar from "./images/1024x1024.png"
 import ChatView from './ChatView'
-
 const { engine } = require('@lk/LK-C')
 const Application = engine.Application
 const lkApp = Application.getCurrentApp()
 const chatManager = engine.ChatManager
 const lkapp = engine.Application.getCurrentApp()
-const LKApplication = engine.Application;
-const db = require('../../store/ElecSqlite');
+const LKApplication = engine.Application
+const db = require('../../store/ElecSqlite')
 
 document.body.className = 'left'
 export default class RecentView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      ary:'',
+      ary: '',
       chatList: []
     }
     this.eventAry = ['recentChange']
@@ -40,8 +39,8 @@ export default class RecentView extends Component {
     const user = lkApp.getCurrentUser()
     const chatAry = await chatManager.getAllChat(user.id)
     const chatTop = chatAry[0].id
-    let chatList = chatAry.map((item,index)=>{
-      const {MessageCeiling, activeTime, avatar, chatName, focus, id, isGroup, memberCount, msgContent, newMsgNum, ownerUserId, reserve1, senderUid, state} = item
+    let chatList = chatAry.map((item, index) => {
+      const { MessageCeiling, activeTime, avatar, chatName, focus, id, isGroup, memberCount, msgContent, newMsgNum, ownerUserId, reserve1, senderUid, state } = item
       const imgMapObj = []
       if (avatar) {
         if (isGroup) {
@@ -53,13 +52,13 @@ export default class RecentView extends Component {
         } else {
           imgMapObj.push(avatar)
         }
-      }else {
+      } else {
         imgMapObj.push(defaultAvatar)
       }
       const option = {
         MessageCeiling,
-        activeTime:this.chatTime(activeTime),
-        avatar:imgMapObj,
+        activeTime: this.chatTime(activeTime),
+        avatar: imgMapObj,
         chatName,
         focus,
         id,
@@ -75,38 +74,40 @@ export default class RecentView extends Component {
         index
 
       }
-      return <RecentItem key={index} {...option} parentChatSelect = {this.parentChatSelect} />
+      return <RecentItem key={index} {...option} parentChatSelect={this.parentChatSelect}/>
     })
     this.setState({
       chatList
     })
   }
-  parentChatSelect = (chatId)=> {
-   //console.log(this.select,chatId)
-    this.select=chatId
+  parentChatSelect = (chatId) => {
+    //console.log(this.select,chatId)
+    this.select = chatId
   }
-  chatTime = (activeTime)=> {
-    let timeStr = '';
-    const now = new Date();
+  chatTime = (activeTime) => {
+    let timeStr = ''
+    const now = new Date()
     if (activeTime) {
-      const date = new Date();
-      date.setTime(activeTime);
+      const date = new Date()
+      date.setTime(activeTime)
       if (now.getFullYear() === date.getFullYear() && now.getMonth() === date.getMonth() && now.getDate() === date.getDate()) {
-        timeStr += "今天 ";
-        timeStr += date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+        timeStr += "今天 "
+        timeStr += date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes())
       } else if (now.getFullYear() === date.getFullYear()) {
         if (date.getDate() === now.getDate() - 1) {
-          timeStr += "昨天 ";
+          timeStr += "昨天 "
         } else {
-          timeStr += date.getFullYear() + '/' + (date.getMonth() + 1) + "/" + date.getDate() + "";
+          timeStr += date.getFullYear() + '/' + (date.getMonth() + 1) + "/" + date.getDate() + ""
         }
       }
     }
     return timeStr
   }
 
+
+
   render() {
-    const {chatList} = this.state
+    const { chatList } = this.state
     // jsx, javascript xml
     return (
       <div>

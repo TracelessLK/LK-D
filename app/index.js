@@ -5,30 +5,31 @@ import Root from './containers/Root';
 import { configureStore, history } from './store/configureStore';
 import App from './components/index'
 //import './app.global.css';
-
-const store = configureStore();
-
-const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
-render(
-  <AppContainer>
-    <Root store={store} history={history} />
-  </AppContainer>,
-  document.getElementById('root')
-);
+//
+// const store = configureStore();
+//
+// const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 // render(
-//   <App/>,
+//   <AppContainer>
+//     <Root store={store} history={history} />
+//   </AppContainer>,
 //   document.getElementById('root')
 // );
-
-if (module.hot) {
-  module.hot.accept('./containers/Root', () => {
-    // eslint-disable-next-line global-require
-    const NextRoot = require('./containers/Root').default;
-    render(
-      <AppContainer>
-        <NextRoot store={store} history={history} />
-      </AppContainer>,
-      document.getElementById('root')
-    );
-  });
-}
+//
+// console.log('log',module.hot)
+// if (module.hot) {
+//   module.hot.accept('./containers/Root', () => {
+//     // eslint-disable-next-line global-require
+//     const NextRoot = require('./containers/Root').default;
+//     render(
+//       <AppContainer>
+//         <NextRoot store={store} history={history} />
+//       </AppContainer>,
+//       document.getElementById('root')
+//     );
+//   });
+// }
+render(
+  <App/>,
+  document.getElementById('root')
+);

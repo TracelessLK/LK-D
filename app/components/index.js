@@ -1,11 +1,14 @@
 
 import React, { Component } from 'react'
+import {BrowserRouter as Router,Route,Link} from 'react-router-dom';
 import RecentView from "./RecentView";
 import RegisterView from './RegisterView'
 import NavigationView from './NavigationView'
 const { engine } = require('@lk/LK-C')
 const db = require('../../store/ElecSqlite');
 const LKApplication = engine.Application;
+import ContactView from './ContactView'
+
 
 
 document.body.className = "left";
@@ -50,9 +53,12 @@ class Index extends React.Component {
 
   render() {
     return (
-      <div className="content">
-        {this.state.content}
-      </div>
+      <Router>
+        <div className="content">
+          {this.state.content}
+        </div>
+      </Router>
+
     )
   }
 }

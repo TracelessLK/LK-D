@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import RecentView from "./RecentView";
 import ChatView from './ChatView'
 import headPortrait from './images/1024x1024.png'
-import { Link } from 'react-router-dom';
+import { Link, Route, Redirect } from 'react-router-dom'
+import ContactView from "./ContactView"
 const { engine } = require('@lk/LK-C')
 const Application = engine.Application
 const lkApp = Application.getCurrentApp()
@@ -15,6 +16,7 @@ class NavigationView extends React.Component {
       selected:'recent'
     }
     this.user = lkApp.getCurrentUser()
+    console.log(this.props)
   }
   selectNavigator (name) {
     if (this.state.selected) {
@@ -25,8 +27,10 @@ class NavigationView extends React.Component {
     return (
       <div className="content">
         <div className='main'>
-          <RecentView/>
-          <ChatView/>
+          <Route path='/' exact component={RecentView}/>
+          <Route path='/ContactView/:id'  component={ContactView}/>
+          {/*<RecentView/>*/}
+          {/*<ChatView/>*/}
         </div>
         <div className='navigator'>
           <div className="message_img">
@@ -36,17 +40,17 @@ class NavigationView extends React.Component {
           </div>
           <div className='message_body'>
             <div className='message_body_L0'/>
-            <i id="recent" className="material-icons message_body_L1" onClick={(name)=> this.selectNavigator('recent')}>chat_bubble_outline</i>
+            <i id="recent" className="material-icons message_body_L1" onClick={(name)=> this.selectNavigator('recent')}><Link to='/'>chat_bubble_outline</Link></i>
           </div>
           <div style={{width:'50px'}}/>
           <div className='message_body'>
             <div className='message_body_L2'/>
-            <i id="recent" className="material-icons message_body_L1">toc</i>
+            <i id="recent" className="material-icons message_body_L1"><Link to={'/ContactView/'+123}>toc</Link></i>
           </div>
           <div style={{width:'50px'}}/>
           <div className='message_body'>
             <div className='message_body_L2'/>
-            <i id="recent" className="material-icons message_body_L1"onClick={(name)=> this.selectNavigator('mine')}> <Link to='/counter' replace>person_outline</Link></i>
+            <i id="recent" className="material-icons message_body_L1"onClick={(name)=> this.selectNavigator('mine')}><Link to='/'>person_outline</Link></i>
           </div>
           <div style={{flex:1}}/>
         </div>

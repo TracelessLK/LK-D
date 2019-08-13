@@ -57,10 +57,15 @@ class RecentItem extends Component {
     }
   }
   componentDidMount() {
+    console.log('mount')
     chatManager.on('chatChange', this.chatChangeListener)
     if (this.props.chatTop=== this.props.id) {
       this.chatSelect()
     }
+  }
+  componentWillUnmount() {
+    console.log('will unmount')
+    chatManager.un('chatChange', this.chatChangeListener)
   }
   chatChangeListener = async({param})=> {
 
@@ -73,9 +78,7 @@ class RecentItem extends Component {
     }
 
   }
-  componentWillUnmount() {
-    chatManager.un('chatChange', this.chatChangeListener)
-  }
+
   preventDefault() {
     event.preventDefault()
   }

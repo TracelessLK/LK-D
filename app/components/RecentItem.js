@@ -10,7 +10,7 @@ const Application = engine.Application
 const lkApp = Application.getCurrentApp()
 const remote = require('electron').remote
 const {Menu, MenuItem} = remote
-
+import { Link, Route, Redirect } from 'react-router-dom'
 class RecentItem extends Component {
   constructor(props) {
     super(props)
@@ -57,14 +57,13 @@ class RecentItem extends Component {
     }
   }
   componentDidMount() {
-    console.log('mount')
     chatManager.on('chatChange', this.chatChangeListener)
     if (this.props.chatTop=== this.props.id) {
       this.chatSelect()
     }
   }
   componentWillUnmount() {
-    console.log('will unmount')
+    this.setState = () => {}
     chatManager.un('chatChange', this.chatChangeListener)
   }
   chatChangeListener = async({param})=> {

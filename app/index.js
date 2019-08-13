@@ -16,7 +16,7 @@ import App from './components/index'
 //   document.getElementById('root')
 // );
 //
-// console.log('log',module.hot)
+
 // if (module.hot) {
 //   module.hot.accept('./containers/Root', () => {
 //     // eslint-disable-next-line global-require

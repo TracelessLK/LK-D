@@ -16,7 +16,6 @@ class NavigationView extends React.Component {
       selected:'recent'
     }
     this.user = lkApp.getCurrentUser()
-    console.log(this.props)
   }
   selectNavigator (name) {
     if (this.state.selected) {
@@ -40,7 +39,7 @@ class NavigationView extends React.Component {
           </div>
           <div className='message_body'>
             <div className='message_body_L0'/>
-            <i id="recent" className="material-icons message_body_L1" onClick={(name)=> this.selectNavigator('recent')}><Link to='/'>chat_bubble_outline</Link></i>
+            <i id="recent" className="material-icons message_body_L1"><Link to='/'>chat_bubble_outline</Link></i>
           </div>
           <div style={{width:'50px'}}/>
           <div className='message_body'>
@@ -50,7 +49,7 @@ class NavigationView extends React.Component {
           <div style={{width:'50px'}}/>
           <div className='message_body'>
             <div className='message_body_L2'/>
-            <i id="recent" className="material-icons message_body_L1"onClick={(name)=> this.selectNavigator('mine')}><Link to='/'>person_outline</Link></i>
+            <i id="recent" className="material-icons message_body_L1"><Link to='/'>person_outline</Link></i>
           </div>
           <div style={{flex:1}}/>
         </div>

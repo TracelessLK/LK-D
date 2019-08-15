@@ -45,7 +45,7 @@ dist
 dll
 main.js.map
 *.db
-
+!resources/dev/LK.db
 .idea
 npm-debug.log.*
 

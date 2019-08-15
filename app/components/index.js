@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import {BrowserRouter as Router,Route,Link} from 'react-router-dom';
+import {BrowserRouter as Router,Route,Link,Switch} from 'react-router-dom';
 import RecentView from "./RecentView";
 import RegisterView from './RegisterView'
 import NavigationView from './NavigationView'

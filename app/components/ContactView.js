@@ -14,7 +14,6 @@ class ContactView extends React.Component {
     this.state = {
       selected:'recent'
     }
-    console.log(this.props)
   }
   selectNavigator (name) {
     if (this.state.selected) {

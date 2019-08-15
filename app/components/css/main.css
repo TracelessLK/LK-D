@@ -132,7 +132,7 @@ html, body {
 }
 
 .message_body_L1 {
-  color: #f9e160;
+  color: rgb(208, 208, 208);
   font-size: 32px;
   cursor: pointer;
   position: relative;

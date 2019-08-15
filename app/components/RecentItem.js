@@ -4,21 +4,21 @@ import admin from "./images/1024x1024.png"
 import sjx from "./images/sjx.png"
 import GroupAvatar from "./GroupAvatar"
 import store from '../store'
+import {getchatSelect} from '../store/actionCreator'
 const { engine } = require('@lk/LK-C')
 const chatManager = engine.ChatManager
 const Application = engine.Application
 const lkApp = Application.getCurrentApp()
 const remote = require('electron').remote
 const {Menu, MenuItem} = remote
-import { Link, Route, Redirect } from 'react-router-dom'
+import { Link, Route ,withRouter} from 'react-router-dom'
 class RecentItem extends Component {
   constructor(props) {
     super(props)
     this.user = lkApp.getCurrentUser()
     this.state = store.getState()
     this.selected = ''
-    this.chatSelectChang = this.chatSelectChang.bind(this)
-    store.subscribe(this.chatSelectChang)
+    store.subscribe(()=>this.setState(store.getState()))
   }
   async menuBar (chatId, isGroupChat, MessageCeiling,focus,user) {
     if (event.button === 2) {
@@ -57,17 +57,27 @@ class RecentItem extends Component {
     }
   }
   componentDidMount() {
+    const {id,chatName,memberCount} = this.props
     chatManager.on('chatChange', this.chatChangeListener)
     if (this.props.chatTop=== this.props.id) {
-      this.chatSelect()
+      this.chatSelect(id,chatName,memberCount)
     }
+    // const data = {
+    //   id:this.props.id,
+    //   chatName:this.props.chatName,
+    //   memberCount:this.props.memberCount
+    // }
+    // if (this.props.chatTop === this.props.id) {
+    //   this.props.history.push({pathname:'/',query:data})
+    // }
+
+
   }
   componentWillUnmount() {
     this.setState = () => {}
     chatManager.un('chatChange', this.chatChangeListener)
   }
   chatChangeListener = async({param})=> {
-
     const {chatId} = param
     if (chatId === this.props.id) {
      const {focus} =  await chatManager.asyGetChat(this.user.id, chatId)
@@ -81,17 +91,15 @@ class RecentItem extends Component {
   preventDefault() {
     event.preventDefault()
   }
-  chatSelect (chatId,chatName) {
-    const action = {
-      type:'chatSelect',
-    }
+  chatSelect (id,chatName,memberCount) {
+    // const data =  {id,chatName,memberCount}
+    // this.props.history.push({pathname:'/',query:data})
+    const action = getchatSelect({id,chatName,memberCount})
     store.dispatch(action)
     this.setState({
       backgroundColor:'rgb(238, 239, 239)'
     })
-  }
-  chatSelectChang () {
-    this.setState(store.getState())
+    //this.props.parentChatSelect({id,chatName,memberCount})
   }
   render() {
     const { MessageCeiling, activeTime, avatar, chatName, id, isGroup, memberCount, msgContent, newMsgNum, ownerUserId, reserve1, senderUid, state ,index} = this.props
@@ -99,7 +107,7 @@ class RecentItem extends Component {
     const isNewMsgNum = newMsgNum ? <div className={style.newMsgNum}>{newMsgNum >= 99 ? '99+' : newMsgNum}</div> : ''
     return (
       <div id={id} ref={id} style={{backgroundColor:this.state.backgroundColor}} className={style.recent_L1}   onMouseDown={this.preventDefault.bind(this)}  onContextMenu={this.preventDefault.bind(this)} onClick={() => {
-        this.chatSelect(id,chatName)
+        this.chatSelect(id,chatName,memberCount)
       }} onMouseUp={this.menuBar.bind(this,id, isGroup, MessageCeiling,focus,this.user)}>
         <div className={style.recent_L2}/>
         {/*<img src={this.imgMapObj} className={style.recent_L3}/>&nbsp;&nbsp;*/}
@@ -119,4 +127,4 @@ class RecentItem extends Component {
   }
 }
 
-export default RecentItem
+export default withRouter(RecentItem)

@@ -4,13 +4,12 @@ import wifi from './images/Wifi-Error.png'
 import RecentItem from './RecentItem'
 import defaultAvatar from "./images/1024x1024.png"
 import ChatView from './ChatView'
+import { Link, Route, Redirect } from 'react-router-dom'
 const { engine } = require('@lk/LK-C')
 const Application = engine.Application
 const lkApp = Application.getCurrentApp()
 const chatManager = engine.ChatManager
-const lkapp = engine.Application.getCurrentApp()
-const LKApplication = engine.Application
-const db = require('../../store/ElecSqlite')
+
 
 document.body.className = 'left'
 export default class RecentView extends Component {
@@ -18,7 +17,7 @@ export default class RecentView extends Component {
     super(props)
     this.state = {
       ary: '',
-      chatList: []
+      chatList: [],
     }
     this.eventAry = ['recentChange']
     this.select = ''
@@ -80,9 +79,9 @@ export default class RecentView extends Component {
       chatList
     })
   }
-  parentChatSelect = (chatId) => {
-    //console.log(this.select,chatId)
-    this.select = chatId
+  parentChatSelect = (data) => {
+    console.log(data)
+
   }
   chatTime = (activeTime) => {
     let timeStr = ''
@@ -110,7 +109,7 @@ export default class RecentView extends Component {
     const { chatList } = this.state
     // jsx, javascript xml
     return (
-      <div>
+      <div className={style.content}>
         <div className={style.recent_message}>
           <div className={style.title} style={{ backgroundColor: 'rgb(251,251,251)' }}>
             <div className={style.search}>
@@ -126,6 +125,10 @@ export default class RecentView extends Component {
           <div id="recent" className={style.recent_L0}>
             {chatList}
           </div>
+        </div>
+        <div className={style.chatHand}>
+          <ChatView/>
+          {/*<Route path='/' exact component={ChatView}/>*/}
         </div>
       </div>
     )

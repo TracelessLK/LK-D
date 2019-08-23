@@ -127,7 +127,7 @@ export default class RecentView extends Component {
           </div>
         </div>
         <div className={style.chatHand}>
-          <ChatView/>
+          <ChatView />
           {/*<Route path='/' exact component={ChatView}/>*/}
         </div>
       </div>

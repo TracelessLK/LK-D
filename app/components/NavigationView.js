@@ -11,8 +11,6 @@ const lkApp = Application.getCurrentApp()
 import store from '../store'
 import { getchatSelect, getselectNavigator } from '../store/actionCreator'
 
-document.body.className = "left"
-
 class NavigationView extends React.Component {
   constructor(props) {
     super(props)

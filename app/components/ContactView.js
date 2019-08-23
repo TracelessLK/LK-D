@@ -7,7 +7,7 @@ import { Link } from "react-router-dom"
 import routes from "../constants/routes"
 import style from'./css/recent.css'
 import wifi from "./images/Wifi-Error.png"
-document.body.className = "left";
+
 class ContactView extends React.Component {
   constructor (props) {
     super(props)

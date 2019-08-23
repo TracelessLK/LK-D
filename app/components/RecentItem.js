@@ -60,7 +60,8 @@ class RecentItem extends Component {
     const {id,chatName,memberCount} = this.props
     chatManager.on('chatChange', this.chatChangeListener)
     if (this.props.chatTop=== this.props.id) {
-      this.chatSelect(id,chatName,memberCount)
+      //this.chatSelect(id,chatName,memberCount)
+      this.refs[this.props.id].click()
     }
     // const data = {
     //   id:this.props.id,
@@ -80,21 +81,22 @@ class RecentItem extends Component {
   chatChangeListener = async({param})=> {
     const {chatId} = param
     if (chatId === this.props.id) {
-     const {focus} =  await chatManager.asyGetChat(this.user.id, chatId)
+      const {focus} =  await chatManager.asyGetChat(this.user.id, chatId)
       this.setState({
         focus:focus
       })
-    }
 
+    }
   }
 
   preventDefault() {
     event.preventDefault()
   }
   chatSelect (id,chatName,memberCount) {
+    const { isGroup} = this.props
     // const data =  {id,chatName,memberCount}
     // this.props.history.push({pathname:'/',query:data})
-    const action = getchatSelect({id,chatName,memberCount})
+    const action = getchatSelect({id,chatName,memberCount,isGroup})
     store.dispatch(action)
     this.setState({
       backgroundColor:'rgb(238, 239, 239)'

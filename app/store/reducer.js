@@ -9,6 +9,7 @@ export default function (state = defaultState, action) {
     newState.chatName = action.value.chatName
     newState.id = action.value.id
     newState.memberCount = action.value.memberCount
+    newState.isGroup = action.value.isGroup
     return newState
   }
   if (action.type === selectNavigator) {

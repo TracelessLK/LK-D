@@ -249,5 +249,5 @@ input:focus {
   color:rgb(255,254,254);font-size: 9pt;border:1px solid red;min-width:16px;height:16px;text-align: center;align-items: center;border-radius: 100px;background-color: rgb(241,56,56);margin-left: -83%;margin-top:12%;margin-bottom: 67px;font-weight: bold;
 }
 .chatHand {
-  flex:1;height:100%;display: flex
+  flex:1;height:100%;display: flex;
 }

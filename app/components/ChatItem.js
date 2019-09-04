@@ -11,14 +11,30 @@ const chatManager = engine.ChatManager
 class ChatItem extends Component {
   constructor (props){
     super(props)
+    this.state = {
+
+    }
     this.msgMaxHeight = 250
     this.msgMaxWidth = 250
   }
   componentDidMount() {
-    chatManager.on('msgStateChange', this.getMessageStatus)
+    chatManager.on('msgItemChange', this.msgItemChangeListener)
   }
   componentWillUnmount() {
-    chatManager.un('msgStateChange', this.getMessageStatus)
+    chatManager.un('msgItemChange', this.msgItemChangeListener)
+  }
+  msgItemChangeListener = async ({param}) => {
+    const {msgId} = param
+    if (msgId === this.props.msgId) {
+      const singleMsg = await chatManager.getSingleMsg({msgId})
+      const {state, readNum, playState} = singleMsg
+      this.setState({
+        state,
+        readNum,
+        playState,
+        msgId
+      })
+    }
   }
   getMessage = (option) => {
     let result = null
@@ -56,24 +72,43 @@ class ChatItem extends Component {
    * MESSAGE_STATE_TARGET_READ 消息\状态\目标\已读取 4
    * @param option
    */
-  getMessageStatus = ({param})=> {
-    const {state} = param
-    console.log({param})
+  getMessageStatus = (state)=> {
       if (state === 0) {
         return <img src={loader} width="18px"height="18px"style={{marginTop: '2px'}}/>
       }else if (state === 1){
         return <sapn style={{color: 'tomato'}}>重发</sapn>
       }else if (state === 2) {
-        return '未读'
+        return this.props.isGroup ===0 ?'未读':this.getstate(this.props.isGroup)
       }else if (state === 3) {
         return '√'
       }else if (state === 4) {
-        return '已读'
+        return this.getstate(this.props.isGroup)
       }
   }
+  getisGroup =  async () => {
+    if (this.props.isGroup === 1){
+      const readStateAry = await chatManager.getAllReadState({
+        msgId: this.props.msgId
+      })
+      this.props.msgStateDetailBox(readStateAry)
+    }
+
+  }
+  getstate =  (isGroup)=> {
+    const readNum = this.state.readNum === undefined ? this.props.readNum : this.state.readNum
+    const  notReadNum = this.props.memberCount-readNum-1
+    if (!notReadNum) {
+      return isGroup === 1 ? '全部已读' : '已读'
+    }else {
+      return `${notReadNum}人未读`
+    }
+
+  }
   render() {
+
     const user = lkApp.getCurrentUser()
     const {lastitem,senderName,senderUid,pic,content} = this.props
+    const state = this.state.state === undefined ? this.props.state : this.state.state
     return (
       <div>
         <div style={{marginTop:10,fontSize:13,textAlign:'center',width:'100%',color: '#a0a0a0'}} >{lastitem}</div>
@@ -89,7 +124,7 @@ class ChatItem extends Component {
             {/*<img id="msgStateImg" src={loader} style={{marginTop: '2%',display: 'block',width:'20px',height:'20px'}} />*/}
             <div style={{border:'0px solid red'}}>
               <div style={{maxWidth:'300px',minHeight:'40px',borderRadius: '5px',overflowWrap: 'break-word',overflow: 'hidden',padding: '12px 10px',backgroundColor: '#ffffff'}}>{this.getMessage(this.props)}</div>
-              <div ref="msgState" style={{color: 'rgb(155,155,155)',fontWeight: 'bold',border:'red 0px solid',width: '70px',height: '20px',cursor: 'pointer'}}>{this.getMessageStatus({param:this.props})}</div>
+              <div ref="msgState" onClick={this.getisGroup} style={{color: 'rgb(155,155,155)',fontWeight: 'bold',border:'red 0px solid',width: '70px',height: '20px',cursor: 'pointer'}}>{this.getMessageStatus(state)}</div>
             </div>
            <div style={{width:'11px',height:'18px',backgroundImage: `url(${chatWR})`,marginTop:'11px'}}/>
             <img src={pic||admin} style={{marginLeft:'5px',marginRight:'10px',width:'40px',height:'40px',borderRadius: '0px'}} />

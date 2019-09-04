@@ -26,9 +26,13 @@ class ChatView extends Component {
    })
  }
  componentDidMount(){
+   this.setState({
+     display:'none'
+   })
    chatManager.on('msgListChange', this.getChatContent)
  }
   componentWillUnmount() {
+    this.setState = () => {}
     chatManager.un('msgListChange', this.getChatContent)
   }
    sendText = (text)=> {
@@ -52,7 +56,7 @@ class ChatView extends Component {
    })
    let lastSpTime
    let now = new Date()
- const chatList = msgAry.map((item,index)=>{
+   const chatList = msgAry.map((item,index)=>{
      let lastitem = []
      if (lastSpTime && item.sendTime - lastSpTime > 10 * 60 * 1000 || !lastSpTime) {
        lastSpTime = item.sendTime
@@ -69,16 +73,32 @@ class ChatView extends Component {
          lastitem.push(timeStr)
        }
      }
-     return <ChatItem key={index} {...item} lastitem={lastitem}/>
+     return <ChatItem key={index} {...item} {...this.state}  lastitem={lastitem} msgStateDetailBox={this.msgStateDetailBox}/>
    })
 
    this.setState({
      ChatItem:chatList
    })
    const {scrollHeight} = this.refs.records
+    console.log({scrollHeight})
    this.refs.records.scrollTop = scrollHeight
  }
-  render() {
+  msgStateDetailBox = (all)=> {
+    const user = lkApp.getCurrentUser()
+     const  Box = all.map((item)=>{
+       if (item.id !== user.id) {
+         return <div style={{width:'100%',display: 'flex'}} key={item.contactId} ><div style={{width:'70%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap'}}>{item.name}</div><div style={{width:'30%'}}>{item.state ? '已读':'未读'}</div></div>
+       }
+     })
+    this.setState({
+      Box,
+      display:'block'
+    })
+  }
+ ismsgStateDetailBox = ()=>{
+   this.setState({display:'none'})
+ }
+ render() {
    // const {chatName,id,memberCount} =this.props.location.query
      const {chatName,id,memberCount} =this.state
     return (
@@ -93,7 +113,7 @@ class ChatView extends Component {
         <div className={style.chat_message_L2}>
           <div style={{backgroundColor: 'rgb(243,243,243)',flex:1,display: 'flex',height:'100%',flexDirection: 'column',justifyContent: 'flex-end',alignItems: 'center'}}>
             <span id="loader" style={{display:'none'}} className={style.chat_message_L2_0}>没有更多信息</span>
-            <div ref="records" style={{width: '100%',height:'100%',  overflowX: 'hidden', overflowY: 'auto', paddingTop: '10px', visibility:'visible'}}  >
+            <div ref="records" style={{width: '100%',height:'100%',  overflowX: 'hidden', overflowY: 'auto', paddingTop: '10px', visibility:'visible'}} onClick={this.ismsgStateDetailBox} >
               {this.state.ChatItem}
             </div>
             <div id="rem" className={style.chat_message_L2_2}>
@@ -127,8 +147,8 @@ class ChatView extends Component {
               <ChatBoxView sendText={this.sendText} sendImg={this.sendImg}/>
             </div>
           </div>
-          <div id="msgStateDetailBox"style={{display:'none',height:'100%',width:'150px',borderLeft: '1px solid #d0d0d0',padding: '10px'}}>
-
+          <div id="msgStateDetailBox"style={{display:`${this.state.display}`,height:'100%',width:'150px',borderLeft: '1px solid #d0d0d0',padding: '10px'}}>
+            {this.state.Box}
           </div>
         </div>
 

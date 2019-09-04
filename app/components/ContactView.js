@@ -1,13 +1,16 @@
 
 import React, { Component } from 'react'
-import RecentView from "./RecentView";
-import ChatView from './ChatView'
-import admin from './images/pan.jpg'
+import admin from './images/1024x1024.png'
 import { Link } from "react-router-dom"
 import routes from "../constants/routes"
 import style from'./css/recent.css'
 import wifi from "./images/Wifi-Error.png"
+const {engine} = require('@lk/LK-C')
 
+const Application = engine.Application
+const lkApp = Application.getCurrentApp()
+const ContactManager = engine.ContactManager
+const OrgManager = engine.OrgManager
 class ContactView extends React.Component {
   constructor (props) {
     super(props)
@@ -15,45 +18,30 @@ class ContactView extends React.Component {
       selected:'recent'
     }
   }
-  selectNavigator (name) {
-    if (this.state.selected) {
-
-    }
+  componentDidMount() {
+    this.asyncRender()
   }
-  // s() {
-  //   ` <div className={style.recent_message}>
-  //       <div className={style.title} style={{backgroundColor: 'rgb(251,251,251)'}}>
-  //         <div >
-  //           通讯录
-  //         </div>
-  //         <div className={style.mail}>
-  //           <div className={style.mail_L1}>
-  //             <div className={style.mail_L2}>
-  //               <img src={admin} className={style.mail_img}/>&nbsp;&nbsp;
-  //               <span className={style.mail_span}>panyu</span>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>`
-  // }
+
+  async asyncRender (name) {
+    const user = lkApp.getCurrentUser()
+    const orgAry = await OrgManager.asyGetChildren(null, user.id)
+    const memberAry = await ContactManager.asyGetAllMembers(user.id)
+    const directories = memberAry.map((item) => {
+       return <div className={style.mail_L2} id={item.id} key={item.id}>
+                <img src={item.pic || admin } className={style.mail_img}/>&nbsp;&nbsp;
+                <span className={style.mail_span}>{item.name}</span>
+              </div>
+    })
+    this.setState({directories})
+  }
   render() {
     return (
       <div className={style.recent_message}>
         <div className={style.title} style={{backgroundColor: 'rgb(251,251,251)'}}>
          通讯录
         </div>
-        <div id="offlineWarning" className={style.Warning}>
-          <img height="20" src={wifi} width="20" className={style.Warning_L1}/>
-          <div className={style.Warning_L0}>
-            &nbsp;&nbsp;网络连接已断开
-          </div>
-        </div>
         <div id="recent" className={style.recent_L0}>
-          <div className={style.mail_L2}>
-            <img src={admin} className={style.mail_img}/>&nbsp;&nbsp;
-            <span className={style.mail_span}>panyu</span>
-          </div>
+          {this.state.directories}
         </div>
       </div>
     )

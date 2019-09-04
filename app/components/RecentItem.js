@@ -82,8 +82,11 @@ class RecentItem extends Component {
     const {chatId} = param
     if (chatId === this.props.id) {
       const {focus} =  await chatManager.asyGetChat(this.user.id, chatId)
+      const newMsgNum =await chatManager.asyGetNewMsgNum(chatId)
+      console.log({newMsgNum})
       this.setState({
-        focus:focus
+        focus:focus,
+        newMsgNum
       })
 
     }
@@ -93,6 +96,7 @@ class RecentItem extends Component {
     event.preventDefault()
   }
   chatSelect (id,chatName,memberCount) {
+    chatManager.asyReadMsgs(id)
     const { isGroup} = this.props
     // const data =  {id,chatName,memberCount}
     // this.props.history.push({pathname:'/',query:data})
@@ -104,8 +108,9 @@ class RecentItem extends Component {
     //this.props.parentChatSelect({id,chatName,memberCount})
   }
   render() {
-    const { MessageCeiling, activeTime, avatar, chatName, id, isGroup, memberCount, msgContent, newMsgNum, ownerUserId, reserve1, senderUid, state ,index} = this.props
+    const { MessageCeiling, activeTime, avatar, chatName, id, isGroup, memberCount, msgContent, ownerUserId, reserve1, senderUid, state ,index} = this.props
     const focus = this.state.focus || this.props.focus
+    const newMsgNum = this.state.newMsgNum === undefined ? this.props.newMsgNum : this.state.newMsgNum
     const isNewMsgNum = newMsgNum ? <div className={style.newMsgNum}>{newMsgNum >= 99 ? '99+' : newMsgNum}</div> : ''
     return (
       <div id={id} ref={id} style={{backgroundColor:this.state.backgroundColor}} className={style.recent_L1}   onMouseDown={this.preventDefault.bind(this)}  onContextMenu={this.preventDefault.bind(this)} onClick={() => {
@@ -123,7 +128,7 @@ class RecentItem extends Component {
           <div className={style.react_L7}>{msgContent}</div>
         </div>
         <img src={sjx} style={{visibility: MessageCeiling?'visible':'hidden'}} className={style.react_L8}/>
-        {isNewMsgNum}
+        <div className={style.newMsgNum} style={{visibility: newMsgNum?'visible':'hidden'}}>{newMsgNum >= 99 ? '99+' : newMsgNum}</div>
       </div>
     )
   }

@@ -243,7 +243,7 @@ export default merge.smart(baseConfig, {
     compress: true,
     noInfo: true,
     stats: 'errors-only',
-    inline: true,
+    inline: false,
     lazy: false,
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },

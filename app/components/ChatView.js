@@ -84,6 +84,7 @@ class ChatView extends Component {
    this.refs.records.scrollTop = scrollHeight
  }
   msgStateDetailBox = (all)=> {
+
     const user = lkApp.getCurrentUser()
      const  Box = all.map((item)=>{
        if (item.id !== user.id) {

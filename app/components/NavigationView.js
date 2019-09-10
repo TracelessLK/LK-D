@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import RecentView from "./RecentView"
-import ChatView from './ChatView'
+import MyDetailsView from './MyDetailsView'
 import headPortrait from './images/1024x1024.png'
 import { Link, Route, Redirect } from 'react-router-dom'
 import ContactView from "./ContactView"
@@ -41,7 +41,7 @@ class NavigationView extends React.Component {
       })
     } else if (name === 'mine') {
       this.setState({
-        selected: <RecentView/>
+        selected: <MyDetailsView/>
       })
     }
   }

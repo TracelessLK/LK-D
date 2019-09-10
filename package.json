@@ -225,6 +225,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
     "@lk/LK-C": "file:submodule/LK-C",
+    "@material-ui/core": "^4.3.3",
+    "@material-ui/icons": "^4.2.1",
     "@ys/collection": "github:spirit1453/node_collection#publish",
     "connected-react-router": "^6.3.2",
     "core-js": "2",
@@ -253,9 +255,6 @@
     "node": ">=7.x",
     "npm": ">=4.x",
     "yarn": ">=0.21.3"
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "browserslist": "electron 1.6"
 }
